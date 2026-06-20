@@ -8,8 +8,9 @@ const LINKS = [
   { label: 'Skills',       href: '#skills' },
   { label: 'Projects',     href: '#projects' },
   { label: 'Experience',   href: '#experience' },
-  { label: 'Certs',        href: '#certifications' },
-  { label: 'Contact',      href: '#contact' },
+  { label: 'Certs',        href: '#certifications'  },
+  { label: 'Blog',         href: '#blog'            },
+  { label: 'Contact',      href: '#contact'         },
 ]
 
 export default function Navbar() {

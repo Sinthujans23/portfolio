@@ -1,21 +1,43 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, Mail, Github, Linkedin, MapPin, CheckCircle, Loader2, Sparkles } from 'lucide-react'
+import { Send, Mail, Github, Linkedin, MapPin, CheckCircle, Loader2, Sparkles, Copy, Check } from 'lucide-react'
+import Confetti from './Confetti'
+
+const EMAIL = 'sinthuu07@gmail.com'
 
 const INFO = [
-  { icon: Mail,     label: 'Email',    value: 'sinthujan@email.com',          href: 'mailto:sinthujan@email.com' },
+  { icon: Mail,     label: 'Email',    value: EMAIL,                          href: `mailto:${EMAIL}`, copyable: true },
   { icon: MapPin,   label: 'Location', value: 'Sri Lanka 🇱🇰',               href: null },
-  { icon: Github,   label: 'GitHub',   value: 'github.com/sinthujan',         href: 'https://github.com' },
-  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/sinthujan',    href: 'https://linkedin.com' },
+  { icon: Github,   label: 'GitHub',   value: 'github.com/Sinthujans23',                              href: 'https://github.com/Sinthujans23' },
+  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/sivarajan-sinthujan', href: 'https://www.linkedin.com/in/sivarajan-sinthujan-71a93b2a2' },
 ]
+
+function CopyButton({ text }) {
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  return (
+    <button
+      onClick={copy}
+      title="Copy email"
+      className="ml-1.5 p-1 rounded-lg text-gray-600 hover:text-indigo-400 hover:bg-indigo-500/10 transition-all"
+    >
+      {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+    </button>
+  )
+}
 
 const INITIAL = { name: '', email: '', message: '' }
 
 export default function Contact() {
-  const [form, setForm]       = useState(INITIAL)
-  const [loading, setLoading] = useState(false)
-  const [sent, setSent]       = useState(false)
-  const [errors, setErrors]   = useState({})
+  const [form, setForm]           = useState(INITIAL)
+  const [loading, setLoading]     = useState(false)
+  const [sent, setSent]           = useState(false)
+  const [errors, setErrors]       = useState({})
+  const [confetti, setConfetti]   = useState(0)
 
   const validate = () => {
     const e = {}
@@ -36,11 +58,22 @@ export default function Contact() {
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
-    /* Replace with actual form submission (EmailJS, Formspree, etc.) */
-    await new Promise(r => setTimeout(r, 1800))
-    setLoading(false)
-    setSent(true)
-    setForm(INITIAL)
+    try {
+      // Sign up at https://formspree.io and replace YOUR_FORM_ID below
+      const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Failed')
+      setSent(true)
+      setForm(INITIAL)
+      setConfetti(n => n + 1)
+    } catch {
+      setErrors({ message: 'Something went wrong. Please try again or email me directly.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -81,23 +114,26 @@ export default function Contact() {
               </p>
 
               <div className="space-y-5">
-                {INFO.map(({ icon: Icon, label, value, href }) => (
+                {INFO.map(({ icon: Icon, label, value, href, copyable }) => (
                   <div key={label} className="flex items-start gap-3.5">
                     <div className="w-9 h-9 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
                       <Icon size={16} className="text-white" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-600 uppercase tracking-wider mb-0.5">{label}</p>
-                      {href ? (
-                        <a
-                          href={href}
-                          className="text-sm text-gray-300 hover:text-indigo-300 transition-colors font-medium"
-                        >
-                          {value}
-                        </a>
-                      ) : (
-                        <p className="text-sm text-gray-300 font-medium">{value}</p>
-                      )}
+                      <div className="flex items-center">
+                        {href ? (
+                          <a
+                            href={href}
+                            className="text-sm text-gray-300 hover:text-indigo-300 transition-colors font-medium"
+                          >
+                            {value}
+                          </a>
+                        ) : (
+                          <p className="text-sm text-gray-300 font-medium">{value}</p>
+                        )}
+                        {copyable && <CopyButton text={value} />}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -236,6 +272,7 @@ export default function Contact() {
           </motion.div>
         </div>
       </div>
+      <Confetti trigger={confetti} />
     </section>
   )
 }

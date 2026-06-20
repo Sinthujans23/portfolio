@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Mail, ArrowUp, Heart, Zap } from 'lucide-react'
+import { Github, Linkedin, Mail, ArrowUp, Heart, Zap, Terminal } from 'lucide-react'
 
 const LINKS = [
   { label: 'Home',       href: '#home'           },
@@ -7,13 +7,14 @@ const LINKS = [
   { label: 'Skills',     href: '#skills'         },
   { label: 'Projects',   href: '#projects'       },
   { label: 'Experience', href: '#experience'     },
+  { label: 'Blog',       href: '#blog'           },
   { label: 'Contact',    href: '#contact'        },
 ]
 
 const SOCIALS = [
-  { icon: Github,   href: 'https://github.com',        label: 'GitHub'   },
-  { icon: Linkedin, href: 'https://linkedin.com',       label: 'LinkedIn' },
-  { icon: Mail,     href: 'mailto:sinthujan@email.com', label: 'Email'    },
+  { icon: Github,   href: 'https://github.com/Sinthujans23',                                    label: 'GitHub'   },
+  { icon: Linkedin, href: 'https://www.linkedin.com/in/sivarajan-sinthujan-71a93b2a2', label: 'LinkedIn' },
+  { icon: Mail,     href: 'mailto:sinthuu07@gmail.com', label: 'Email'    },
 ]
 
 export default function Footer() {
@@ -86,11 +87,19 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-600 flex items-center gap-1.5">
-            © {new Date().getFullYear()} Sinthujan. Made with{' '}
-            <Heart size={12} className="text-red-500 fill-red-500" /> &{' '}
-            <span className="text-indigo-400">AI</span>. All rights reserved.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <p className="text-xs text-gray-600 flex items-center gap-1.5">
+              © {new Date().getFullYear()} Sinthujan. Made with{' '}
+              <Heart size={12} className="text-red-500 fill-red-500" /> &{' '}
+              <span className="text-indigo-400">AI</span>. All rights reserved.
+            </p>
+            <span
+              title="Press Ctrl+` to open terminal"
+              className="hidden sm:flex items-center gap-1.5 text-xs text-gray-700 hover:text-indigo-400 transition-colors cursor-default"
+            >
+              <Terminal size={11} /> Ctrl+`
+            </span>
+          </div>
 
           {/* Back to top */}
           <motion.button

@@ -1,0 +1,32 @@
+import { useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+
+export default function MagneticButton({ children, className = '', strength = 0.35, ...props }) {
+  const ref = useRef(null)
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+
+  const onMouseMove = e => {
+    if (isTouch) return
+    const rect = ref.current.getBoundingClientRect()
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    setPos({ x: (e.clientX - cx) * strength, y: (e.clientY - cy) * strength })
+  }
+
+  const onMouseLeave = () => setPos({ x: 0, y: 0 })
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      animate={{ x: pos.x, y: pos.y }}
+      transition={{ type: 'spring', stiffness: 200, damping: 18, mass: 0.5 }}
+      className={`inline-flex ${className}`}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  )
+}

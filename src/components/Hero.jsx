@@ -1,13 +1,53 @@
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Github, Linkedin, Mail, Download, MessageSquare, ChevronDown, MapPin } from 'lucide-react'
+import MagneticButton from './MagneticButton'
 
 const SOCIALS = [
-  { icon: Github,   href: 'https://github.com',   label: 'GitHub'   },
-  { icon: Linkedin, href: 'https://linkedin.com',  label: 'LinkedIn' },
-  { icon: Mail,     href: 'mailto:sinthujan@email.com', label: 'Email' },
+  { icon: Github,   href: 'https://github.com/Sinthujans23',                                    label: 'GitHub'   },
+  { icon: Linkedin, href: 'https://www.linkedin.com/in/sivarajan-sinthujan-71a93b2a2', label: 'LinkedIn' },
+  { icon: Mail,     href: 'mailto:sinthuu07@gmail.com', label: 'Email' },
 ]
 
-const ROLES = ['AI Developer', 'ML Enthusiast', 'Software Engineer']
+const ROLES = ['AI Developer', 'ML Enthusiast', 'Software Engineer', 'LLM Engineer']
+
+const ROLE_COLORS = [
+  'from-indigo-400 to-purple-400',
+  'from-purple-400 to-pink-400',
+  'from-cyan-400 to-blue-400',
+  'from-emerald-400 to-teal-400',
+]
+
+function TypewriterRole() {
+  const [index, setIndex] = useState(0)
+  const [displayed, setDisplayed] = useState('')
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    const target = ROLES[index]
+    let timeout
+
+    if (!deleting && displayed.length < target.length) {
+      timeout = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), 70)
+    } else if (!deleting && displayed.length === target.length) {
+      timeout = setTimeout(() => setDeleting(true), 1800)
+    } else if (deleting && displayed.length > 0) {
+      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40)
+    } else if (deleting && displayed.length === 0) {
+      setDeleting(false)
+      setIndex(i => (i + 1) % ROLES.length)
+    }
+
+    return () => clearTimeout(timeout)
+  }, [displayed, deleting, index])
+
+  return (
+    <span className={`bg-gradient-to-r ${ROLE_COLORS[index]} bg-clip-text text-transparent`}>
+      {displayed}
+      <span className="animate-pulse">|</span>
+    </span>
+  )
+}
 
 const fadeUp = (delay = 0) => ({
   initial:    { opacity: 0, y: 28 },
@@ -47,20 +87,10 @@ export default function Hero() {
               <span className="gradient-text">Sinthujan</span>
             </motion.h1>
 
-            {/* Role pills */}
-            <motion.div {...fadeUp(0.3)} className="flex flex-wrap gap-2 justify-center lg:justify-start mb-6">
-              {ROLES.map((role, i) => (
-                <span
-                  key={role}
-                  className={`px-3 py-1 rounded-full text-sm font-semibold border ${
-                    i === 0 ? 'border-indigo-500/40 text-indigo-300 bg-indigo-500/10'
-                    : i === 1 ? 'border-purple-500/40 text-purple-300 bg-purple-500/10'
-                    : 'border-cyan-500/40 text-cyan-300 bg-cyan-500/10'
-                  }`}
-                >
-                  {role}
-                </span>
-              ))}
+            {/* Typewriter role */}
+            <motion.div {...fadeUp(0.3)} className="flex items-center gap-2 justify-center lg:justify-start mb-6 min-h-[2rem]">
+              <span className="text-gray-400 text-base font-medium">I'm a </span>
+              <span className="text-base font-bold"><TypewriterRole /></span>
             </motion.div>
 
             {/* Tagline */}
@@ -77,21 +107,27 @@ export default function Hero() {
 
             {/* CTA Buttons */}
             <motion.div {...fadeUp(0.5)} className="flex flex-wrap gap-3 justify-center lg:justify-start mb-8">
-              <a
-                href="#"
-                className="flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl font-semibold text-white hover:opacity-90 hover:scale-105 active:scale-95 transition-all shadow-lg shadow-indigo-500/25"
-              >
-                <Download size={17} />
-                Download CV
-              </a>
-              <a
-                href="#contact"
-                onClick={e => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }) }}
-                className="flex items-center gap-2.5 px-7 py-3.5 glass border border-white/10 rounded-xl font-semibold text-white hover:border-indigo-500/50 hover:scale-105 active:scale-95 transition-all"
-              >
-                <MessageSquare size={17} />
-                Contact Me
-              </a>
+              <MagneticButton>
+                <a
+                  href="/cv.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl font-semibold text-white hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-indigo-500/25"
+                >
+                  <Download size={17} />
+                  Download CV
+                </a>
+              </MagneticButton>
+              <MagneticButton>
+                <a
+                  href="#contact"
+                  onClick={e => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }) }}
+                  className="flex items-center gap-2.5 px-7 py-3.5 glass border border-white/10 rounded-xl font-semibold text-white hover:border-indigo-500/50 active:scale-95 transition-all"
+                >
+                  <MessageSquare size={17} />
+                  Contact Me
+                </a>
+              </MagneticButton>
             </motion.div>
 
             {/* Social links */}

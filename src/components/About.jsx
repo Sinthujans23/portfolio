@@ -1,5 +1,58 @@
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Brain, Code2, Rocket, Target, Sparkles } from 'lucide-react'
+
+function useCountUp(target, duration = 1600) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true
+        const start = performance.now()
+        const tick = now => {
+          const p = Math.min((now - start) / duration, 1)
+          const ease = 1 - Math.pow(1 - p, 3)
+          setCount(Math.floor(ease * target))
+          if (p < 1) requestAnimationFrame(tick)
+          else setCount(target)
+        }
+        requestAnimationFrame(tick)
+      }
+    }, { threshold: 0.3 })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [target, duration])
+
+  return { count, ref }
+}
+
+function AnimatedStat({ value, label, delay }) {
+  const numeric = parseInt(value)
+  const suffix = value.replace(String(numeric), '')
+  const { count, ref } = useCountUp(numeric)
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay }}
+      whileHover={{ scale: 1.04 }}
+      className="glass border border-white/[0.07] hover:border-indigo-500/25 rounded-2xl p-6 text-center transition-all group"
+    >
+      <p className="text-4xl font-black gradient-text mb-1 group-hover:scale-105 transition-transform inline-block">
+        {count}{suffix}
+      </p>
+      <p className="text-xs text-gray-500 font-medium tracking-wide">{label}</p>
+    </motion.div>
+  )
+}
 
 const HIGHLIGHTS = [
   { icon: Brain,    title: 'AI & ML Focus',     desc: 'Deep expertise in building intelligent systems with cutting-edge ML frameworks and architectures.' },
@@ -105,17 +158,7 @@ export default function About() {
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {STATS.map(({ value, label }, i) => (
-            <motion.div
-              key={label}
-              {...fadeUp(0.3 + i * 0.07)}
-              whileHover={{ scale: 1.04 }}
-              className="glass border border-white/[0.07] hover:border-indigo-500/25 rounded-2xl p-6 text-center transition-all group"
-            >
-              <p className="text-4xl font-black gradient-text mb-1 group-hover:scale-105 transition-transform inline-block">
-                {value}
-              </p>
-              <p className="text-xs text-gray-500 font-medium tracking-wide">{label}</p>
-            </motion.div>
+            <AnimatedStat key={label} value={value} label={label} delay={0.3 + i * 0.07} />
           ))}
         </div>
       </div>
