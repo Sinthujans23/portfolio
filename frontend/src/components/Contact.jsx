@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Send, Mail, Github, Linkedin, MapPin, CheckCircle, Loader2, Sparkles, Copy, Check } from 'lucide-react'
 import Confetti from './Confetti'
-import { supabase } from '../lib/supabase'
+import { hasSupabaseConfig, supabase } from '../lib/supabase'
 
 const EMAIL = 'sinthuu07@gmail.com'
 
@@ -58,6 +58,10 @@ export default function Contact() {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
+    if (!hasSupabaseConfig) {
+      setErrors({ message: 'Contact form is not configured yet. Please email me directly.' })
+      return
+    }
     setLoading(true)
     try {
       const { error } = await supabase

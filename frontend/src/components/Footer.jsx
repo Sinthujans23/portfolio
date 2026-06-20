@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, Heart, Zap, Terminal, Send, CheckCircle } from 'lucide-react'
-import { supabase } from '../lib/supabase'
+import { hasSupabaseConfig, supabase } from '../lib/supabase'
 
 const LINKS = [
   { label: 'Home',       href: '#home'       },
@@ -26,6 +26,10 @@ function NewsletterForm() {
   const submit = async e => {
     e.preventDefault()
     if (!email || !/\S+@\S+\.\S+/.test(email)) return
+    if (!hasSupabaseConfig) {
+      setStatus('error')
+      return
+    }
     setStatus('loading')
     const { error } = await supabase.from('subscribers').insert({ email })
     if (!error) {

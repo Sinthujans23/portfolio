@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ExternalLink, Clock, PenLine, Eye } from 'lucide-react'
-import { supabase } from '../lib/supabase'
+import { hasSupabaseConfig, supabase } from '../lib/supabase'
 
 const ARTICLES = [
   {
@@ -42,6 +42,7 @@ const ARTICLES = [
 function useBlogViews() {
   const [views, setViews] = useState({})
   useEffect(() => {
+    if (!hasSupabaseConfig) return
     const slugs = ARTICLES.map(a => a.slug)
     supabase
       .from('blog_views')
@@ -58,6 +59,7 @@ function useBlogViews() {
 }
 
 async function trackView(slug) {
+  if (!hasSupabaseConfig) return
   await supabase.from('blog_views').insert({ slug })
 }
 
