@@ -67,10 +67,10 @@ export default function Hero() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-900/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container relative z-10">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-8">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-center gap-12 lg:gap-20">
 
           {/* ── Left content ── */}
-          <div className="flex-1 text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
+          <div className="text-center lg:text-left max-w-xl">
 
             {/* Available badge */}
             <motion.div {...fadeUp(0.1)} className="inline-flex items-center gap-2.5 glass border border-white/10 rounded-full px-4 py-2 mb-6">
@@ -100,9 +100,23 @@ export default function Hero() {
             </motion.p>
 
             {/* Location */}
-            <motion.div {...fadeUp(0.45)} className="flex items-center gap-1.5 justify-center lg:justify-start text-gray-500 text-sm mb-8">
+            <motion.div {...fadeUp(0.45)} className="flex items-center gap-1.5 justify-center lg:justify-start text-gray-500 text-sm mb-6">
               <MapPin size={14} className="text-indigo-400" />
               <span>Sri Lanka 🇱🇰</span>
+            </motion.div>
+
+            {/* Stats row */}
+            <motion.div {...fadeUp(0.48)} className="grid grid-cols-3 gap-3 mb-8">
+              {[
+                { num: '10+', label: 'Projects Built'  },
+                { num: '5+',  label: 'Certifications'  },
+                { num: '2+',  label: 'Years Learning'  },
+              ].map(({ num, label }) => (
+                <div key={label} className="glass border border-white/[0.07] rounded-2xl p-3 text-center">
+                  <p className="text-2xl font-black gradient-text">{num}</p>
+                  <p className="text-[11px] text-gray-500 mt-0.5 leading-tight">{label}</p>
+                </div>
+              ))}
             </motion.div>
 
             {/* CTA Buttons */}
@@ -131,7 +145,7 @@ export default function Hero() {
             </motion.div>
 
             {/* Social links */}
-            <motion.div {...fadeUp(0.6)} className="flex gap-3 justify-center lg:justify-start">
+            <motion.div {...fadeUp(0.6)} className="flex gap-3 justify-center lg:justify-start mb-5">
               {SOCIALS.map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -143,6 +157,13 @@ export default function Hero() {
                 >
                   <Icon size={19} />
                 </a>
+              ))}
+            </motion.div>
+
+            {/* Tech badges */}
+            <motion.div {...fadeUp(0.7)} className="flex flex-wrap gap-2 justify-center lg:justify-start">
+              {['Python', 'React', 'LangChain', 'OpenAI', 'FastAPI', 'PyTorch'].map(tech => (
+                <span key={tech} className="tech-tag">{tech}</span>
               ))}
             </motion.div>
           </div>
