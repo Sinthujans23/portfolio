@@ -121,6 +121,7 @@ export default function Terminal({ onClose }) {
       animate={{ opacity: 1, scale: 1,    y: 0  }}
       exit={{   opacity: 0, scale: 0.92,  y: 40 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
+      data-force-dark="true"
       className="fixed inset-0 z-[180] flex items-center justify-center p-4"
       onClick={e => e.target === e.currentTarget && onClose()}
     >

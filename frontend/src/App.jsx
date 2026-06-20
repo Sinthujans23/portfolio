@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import { ThemeProvider } from './context/ThemeContext'
 import ParticleBackground from './components/ParticleBackground'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -20,7 +21,7 @@ import Grain from './components/Grain'
 import Testimonials from './components/Testimonials'
 import Blog from './components/Blog'
 
-export default function App() {
+function PortfolioApp() {
   const [ready, setReady] = useState(false)
   const [terminalOpen, setTerminalOpen] = useState(false)
 
@@ -37,12 +38,11 @@ export default function App() {
   }, [])
 
   return (
-    <>
+    <div>
       <SplashScreen onDone={() => setReady(true)} />
 
       {ready && (
         <div className="relative min-h-screen bg-mesh text-white overflow-x-hidden">
-          {/* Accessibility */}
           <a href="#main-content" className="skip-link">Skip to content</a>
 
           <ScrollProgress />
@@ -67,7 +67,6 @@ export default function App() {
           <BackToTop />
           <SectionDots />
 
-          {/* Terminal Easter egg — Ctrl+` */}
           <AnimatePresence>
             {terminalOpen && (
               <Terminal key="terminal" onClose={() => setTerminalOpen(false)} />
@@ -75,6 +74,14 @@ export default function App() {
           </AnimatePresence>
         </div>
       )}
-    </>
+    </div>
+  )
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <PortfolioApp />
+    </ThemeProvider>
   )
 }

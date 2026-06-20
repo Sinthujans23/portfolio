@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Zap } from 'lucide-react'
+import { Menu, X, Zap, Sun, Moon } from 'lucide-react'
+import { useTheme } from '../context/ThemeContext'
 
 const LINKS = [
   { label: 'Home',         href: '#home' },
@@ -17,6 +18,7 @@ export default function Navbar() {
   const [scrolled, setScrolled]   = useState(false)
   const [open, setOpen]           = useState(false)
   const [active, setActive]       = useState('home')
+  const { theme, toggle }         = useTheme()
 
   useEffect(() => {
     const onScroll = () => {
@@ -86,14 +88,36 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* CTA */}
-        <a
-          href="#contact"
-          onClick={e => { e.preventDefault(); go('#contact') }}
-          className="hidden md:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-sm font-semibold text-white hover:opacity-90 hover:scale-105 transition-all shadow-lg shadow-indigo-500/20"
-        >
-          Hire Me
-        </a>
+        {/* Theme toggle + CTA */}
+        <div className="hidden md:flex items-center gap-2">
+          <motion.button
+            onClick={toggle}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Toggle theme"
+            className="w-9 h-9 glass border border-white/10 rounded-xl flex items-center justify-center text-gray-400 hover:text-indigo-400 hover:border-indigo-500/40 transition-all"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={theme}
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0,   opacity: 1 }}
+                exit={{   rotate:  90,  opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+              </motion.span>
+            </AnimatePresence>
+          </motion.button>
+
+          <a
+            href="#contact"
+            onClick={e => { e.preventDefault(); go('#contact') }}
+            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-sm font-semibold text-white hover:opacity-90 hover:scale-105 transition-all shadow-lg shadow-indigo-500/20"
+          >
+            Hire Me
+          </a>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -135,6 +159,13 @@ export default function Navbar() {
                   {label}
                 </button>
               ))}
+              <button
+                onClick={toggle}
+                className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.06] transition-all"
+              >
+                {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              </button>
               <button
                 onClick={() => go('#contact')}
                 className="mt-2 w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-sm font-semibold text-white"
