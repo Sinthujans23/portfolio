@@ -16,7 +16,7 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'float-delayed': 'float 6s ease-in-out 2s infinite',
         'glow-pulse': 'glowPulse 3s ease-in-out infinite alternate',
-        'spin-slow': 'spin 8s linear infinite',
+        'spin-slow': 'spin 24s linear infinite',
       },
       keyframes: {
         float: {
