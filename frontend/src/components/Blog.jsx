@@ -1,8 +1,11 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ExternalLink, Clock, Sparkles, PenLine } from 'lucide-react'
+import { ExternalLink, Clock, PenLine, Eye } from 'lucide-react'
+import { supabase } from '../lib/supabase'
 
 const ARTICLES = [
   {
+    slug: 'multi-agent-ai-langchain',
     title: 'Building a Multi-Agent AI System with LangChain',
     excerpt: 'A deep dive into designing orchestration, planning, and execution agents that work in tandem to solve complex multi-step tasks with memory and reasoning.',
     tag: 'AI Agents',
@@ -13,6 +16,7 @@ const ARTICLES = [
     gradient: 'from-indigo-600 to-purple-600',
   },
   {
+    slug: 'rag-systems-production',
     title: 'RAG Systems Explained: From Theory to Production',
     excerpt: 'How retrieval-augmented generation works under the hood, the chunking strategies that matter, and lessons learned building a production RAG pipeline.',
     tag: 'LLM',
@@ -23,6 +27,7 @@ const ARTICLES = [
     gradient: 'from-purple-600 to-pink-600',
   },
   {
+    slug: 'prompt-engineering-patterns',
     title: 'Prompt Engineering Patterns I Use Every Day',
     excerpt: 'Chain-of-thought, few-shot, role prompting, self-consistency — practical patterns with real examples that reliably improve LLM output quality.',
     tag: 'Prompt Eng.',
@@ -34,7 +39,37 @@ const ARTICLES = [
   },
 ]
 
+function useBlogViews() {
+  const [views, setViews] = useState({})
+  useEffect(() => {
+    const slugs = ARTICLES.map(a => a.slug)
+    supabase
+      .from('blog_views')
+      .select('slug')
+      .in('slug', slugs)
+      .then(({ data }) => {
+        if (!data) return
+        const counts = {}
+        data.forEach(r => { counts[r.slug] = (counts[r.slug] || 0) + 1 })
+        setViews(counts)
+      })
+  }, [])
+  return [views, setViews]
+}
+
+async function trackView(slug) {
+  await supabase.from('blog_views').insert({ slug })
+}
+
 export default function Blog() {
+  const [views, setViews] = useBlogViews()
+
+  const handleClick = async (e, article) => {
+    if (article.href === '#') e.preventDefault()
+    await trackView(article.slug)
+    setViews(prev => ({ ...prev, [article.slug]: (prev[article.slug] || 0) + 1 }))
+  }
+
   return (
     <section id="blog" className="py-28 relative">
       <div className="absolute top-0 -left-40 w-80 h-80 bg-indigo-700/8 rounded-full blur-[100px] pointer-events-none" />
@@ -55,12 +90,13 @@ export default function Blog() {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-          {ARTICLES.map(({ title, excerpt, tag, tagColor, readTime, date, href, gradient }, i) => (
+          {ARTICLES.map((article, i) => (
             <motion.a
-              key={title}
-              href={href}
-              target="_blank"
+              key={article.slug}
+              href={article.href}
+              target={article.href !== '#' ? '_blank' : undefined}
               rel="noopener noreferrer"
+              onClick={e => handleClick(e, article)}
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
@@ -68,31 +104,34 @@ export default function Blog() {
               whileHover={{ y: -5 }}
               className="group glass border border-white/[0.07] hover:border-white/15 rounded-3xl overflow-hidden flex flex-col transition-all cursor-pointer"
             >
-              {/* Top accent bar */}
-              <div className={`h-1 bg-gradient-to-r ${gradient}`} />
+              <div className={`h-1 bg-gradient-to-r ${article.gradient}`} />
 
               <div className="flex flex-col flex-1 p-6">
-                {/* Tag + date */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${tagColor}`}>
-                    {tag}
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${article.tagColor}`}>
+                    {article.tag}
                   </span>
-                  <span className="text-xs text-gray-600 font-mono">{date}</span>
+                  <span className="text-xs text-gray-600 font-mono">{article.date}</span>
                 </div>
 
-                {/* Title */}
                 <h3 className="text-sm font-bold text-white leading-snug mb-3 group-hover:gradient-text transition-all">
-                  {title}
+                  {article.title}
                 </h3>
 
-                {/* Excerpt */}
-                <p className="text-xs text-gray-500 leading-relaxed flex-1 mb-5">{excerpt}</p>
+                <p className="text-xs text-gray-500 leading-relaxed flex-1 mb-5">{article.excerpt}</p>
 
-                {/* Footer */}
                 <div className="flex items-center justify-between pt-3 border-t border-white/5">
-                  <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                    <Clock size={11} />
-                    {readTime}
+                  <div className="flex items-center gap-3 text-xs text-gray-600">
+                    <span className="flex items-center gap-1">
+                      <Clock size={11} />
+                      {article.readTime}
+                    </span>
+                    {views[article.slug] > 0 && (
+                      <span className="flex items-center gap-1">
+                        <Eye size={11} />
+                        {views[article.slug]}
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-1 text-xs text-gray-600 group-hover:text-indigo-400 transition-colors">
                     Read more <ExternalLink size={11} />
@@ -112,8 +151,6 @@ export default function Blog() {
         >
           <a
             href="#"
-            target="_blank"
-            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white glass border border-white/10 hover:border-indigo-500/40 px-6 py-3 rounded-xl transition-all hover:scale-105"
           >
             <PenLine size={15} />
