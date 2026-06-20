@@ -59,18 +59,19 @@ export default function Contact() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
     try {
-      // Sign up at https://formspree.io and replace YOUR_FORM_ID below
-      const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      const base = import.meta.env.VITE_API_URL || ''
+      const res = await fetch(`${base}/api/contact`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      if (!res.ok) throw new Error('Failed')
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed')
       setSent(true)
       setForm(INITIAL)
       setConfetti(n => n + 1)
-    } catch {
-      setErrors({ message: 'Something went wrong. Please try again or email me directly.' })
+    } catch (err) {
+      setErrors({ message: err.message || 'Something went wrong. Please try again or email me directly.' })
     } finally {
       setLoading(false)
     }

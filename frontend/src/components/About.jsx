@@ -1,6 +1,64 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Brain, Code2, Rocket, Target, Sparkles } from 'lucide-react'
+import { Brain, Code2, Rocket, Target, Sparkles, Github, Star, Users, BookOpen } from 'lucide-react'
+
+function useGitHubStats() {
+  const [stats, setStats] = useState(null)
+  useEffect(() => {
+    const base = import.meta.env.VITE_API_URL || ''
+    fetch(`${base}/api/github`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => data && setStats(data))
+      .catch(() => {})
+  }, [])
+  return stats
+}
+
+function GitHubCard({ stats }) {
+  if (!stats) return null
+  return (
+    <motion.a
+      href={stats.profileUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: 0.35 }}
+      whileHover={{ y: -3 }}
+      className="glass border border-white/[0.07] hover:border-indigo-500/30 rounded-2xl p-5 flex flex-col gap-4 transition-all group col-span-full"
+    >
+      <div className="flex items-center gap-3">
+        <img src={stats.avatar} alt={stats.username} className="w-10 h-10 rounded-full border-2 border-indigo-500/40" />
+        <div>
+          <p className="text-sm font-bold text-white group-hover:gradient-text transition-all">@{stats.username}</p>
+          {stats.bio && <p className="text-xs text-gray-500 truncate max-w-xs">{stats.bio}</p>}
+        </div>
+        <Github size={16} className="ml-auto text-gray-600 group-hover:text-indigo-400 transition-colors" />
+      </div>
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { icon: BookOpen, label: 'Repos',     value: stats.repos     },
+          { icon: Star,     label: 'Stars',     value: stats.stars     },
+          { icon: Users,    label: 'Followers', value: stats.followers },
+        ].map(({ icon: Icon, label, value }) => (
+          <div key={label} className="text-center p-2 bg-white/[0.03] rounded-xl">
+            <Icon size={14} className="text-indigo-400 mx-auto mb-1" />
+            <p className="text-base font-black gradient-text">{value}</p>
+            <p className="text-[10px] text-gray-600">{label}</p>
+          </div>
+        ))}
+      </div>
+      {stats.topLanguages?.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {stats.topLanguages.map(lang => (
+            <span key={lang} className="tech-tag text-[10px]">{lang}</span>
+          ))}
+        </div>
+      )}
+    </motion.a>
+  )
+}
 
 function useCountUp(target, duration = 1600) {
   const [count, setCount] = useState(0)
@@ -76,6 +134,7 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function About() {
+  const ghStats = useGitHubStats()
   return (
     <section id="about" className="py-28 relative">
       <div className="absolute top-1/2 -left-40 w-96 h-96 bg-purple-700/8 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none" />
@@ -138,6 +197,7 @@ export default function About() {
 
           {/* Highlight cards */}
           <div className="lg:col-span-2 grid sm:grid-cols-2 lg:grid-cols-1 gap-4">
+            <GitHubCard stats={ghStats} />
             {HIGHLIGHTS.map(({ icon: Icon, title, desc }, i) => (
               <motion.div
                 key={title}
