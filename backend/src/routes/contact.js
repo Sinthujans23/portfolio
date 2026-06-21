@@ -2,10 +2,13 @@ import { Router } from 'express'
 import { Resend } from 'resend'
 
 const router = Router()
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 router.post('/', async (req, res) => {
   const { name, email, message } = req.body
+
+  if (!process.env.RESEND_API_KEY) {
+    return res.status(503).json({ error: 'Contact form is not configured.' })
+  }
 
   if (!name?.trim() || !email?.trim() || !message?.trim()) {
     return res.status(400).json({ error: 'All fields are required.' })
@@ -16,6 +19,8 @@ router.post('/', async (req, res) => {
   }
 
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
     await resend.emails.send({
       from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
       to:   process.env.TO_EMAIL   || 'sinthuu07@gmail.com',

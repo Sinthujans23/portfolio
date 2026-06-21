@@ -1,57 +1,9 @@
 import { motion } from 'framer-motion'
-import { Award, ExternalLink, Sparkles } from 'lucide-react'
+import { Award, Bot, Box, ExternalLink, Sparkles } from 'lucide-react'
 
 const CERTS = [
   {
-    emoji: '🎓',
-    name: 'Machine Learning Specialization',
-    issuer: 'Coursera · Stanford University',
-    date: '2024',
-    gradient: 'from-blue-600 to-indigo-600',
-    link: '#',
-  },
-  {
-    emoji: '🧠',
-    name: 'Deep Learning Specialization',
-    issuer: 'Coursera · DeepLearning.AI',
-    date: '2024',
-    gradient: 'from-indigo-600 to-purple-600',
-    link: '#',
-  },
-  {
-    emoji: '☁️',
-    name: 'AWS Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    date: '2024',
-    gradient: 'from-orange-500 to-yellow-500',
-    link: '#',
-  },
-  {
-    emoji: '🐍',
-    name: 'Python for Data Science & AI',
-    issuer: 'Coursera · IBM',
-    date: '2023',
-    gradient: 'from-yellow-500 to-green-500',
-    link: '#',
-  },
-  {
-    emoji: '⚡',
-    name: 'Prompt Engineering for LLMs',
-    issuer: 'DeepLearning.AI · Anthropic',
-    date: '2024',
-    gradient: 'from-purple-600 to-pink-600',
-    link: '#',
-  },
-  {
-    emoji: '⚛️',
-    name: 'Meta React Developer',
-    issuer: 'Coursera · Meta',
-    date: '2023',
-    gradient: 'from-cyan-600 to-blue-600',
-    link: '#',
-  },
-  {
-    emoji: '🤖',
+    Icon: Bot,
     name: 'LangChain & LLM Applications',
     issuer: 'DeepLearning.AI',
     date: '2024',
@@ -59,7 +11,7 @@ const CERTS = [
     link: '#',
   },
   {
-    emoji: '🐳',
+    Icon: Box,
     name: 'Docker & Containerization',
     issuer: 'Udemy',
     date: '2023',
@@ -89,7 +41,7 @@ export default function Certifications() {
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {CERTS.map(({ emoji, name, issuer, date, gradient, link }, i) => (
+          {CERTS.map(({ Icon, name, issuer, date, gradient, link }, i) => (
             <motion.a
               key={name}
               href={link}
@@ -102,9 +54,8 @@ export default function Certifications() {
               whileHover={{ y: -5, scale: 1.02 }}
               className="group glass border border-white/[0.07] hover:border-white/15 rounded-2xl p-5 flex flex-col gap-3 transition-all cursor-pointer"
             >
-              {/* Badge icon */}
-              <div className={`w-13 h-13 w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform`}>
-                {emoji}
+              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                <Icon size={24} className="text-white" />
               </div>
 
               <div className="flex-1">

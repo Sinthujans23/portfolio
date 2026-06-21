@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import ParticleBackground from './components/ParticleBackground'
 import Navbar from './components/Navbar'
@@ -18,8 +19,10 @@ import SplashScreen from './components/SplashScreen'
 import Terminal from './components/Terminal'
 import SectionDots from './components/SectionDots'
 import Grain from './components/Grain'
-import Testimonials from './components/Testimonials'
 import Blog from './components/Blog'
+import AllArticles from './pages/AllArticles'
+import WriteArticle from './pages/WriteArticle'
+import ArticleView from './pages/ArticleView'
 
 function PortfolioApp() {
   const [ready, setReady] = useState(false)
@@ -58,7 +61,6 @@ function PortfolioApp() {
             <Projects />
             <Experience />
             <Certifications />
-            <Testimonials />
             <Blog />
             <Contact />
           </main>
@@ -81,7 +83,14 @@ function PortfolioApp() {
 export default function App() {
   return (
     <ThemeProvider>
-      <PortfolioApp />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<PortfolioApp />} />
+          <Route path="/articles" element={<AllArticles />} />
+          <Route path="/articles/write" element={<WriteArticle />} />
+          <Route path="/articles/:slug" element={<ArticleView />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   )
 }
