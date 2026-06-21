@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Github, ExternalLink, Bot, Dumbbell, Droplets, MessageSquare, Sparkles } from 'lucide-react'
+import { Github, Bot, Dumbbell, Droplets, MessageSquare, Sparkles } from 'lucide-react'
 
 const PROJECTS = [
   {
@@ -12,7 +12,6 @@ const PROJECTS = [
     gradient: 'from-indigo-600 via-purple-600 to-violet-700',
     glow: 'rgba(99,102,241,0.3)',
     github: '#',
-    demo: '#',
     badge: 'Featured',
   },
   {
@@ -24,7 +23,6 @@ const PROJECTS = [
     gradient: 'from-purple-600 via-fuchsia-600 to-pink-600',
     glow: 'rgba(139,92,246,0.3)',
     github: '#',
-    demo: '#',
     badge: 'ML',
   },
   {
@@ -36,7 +34,6 @@ const PROJECTS = [
     gradient: 'from-cyan-600 via-blue-600 to-indigo-600',
     glow: 'rgba(6,182,212,0.3)',
     github: '#',
-    demo: '#',
     badge: 'IoT',
   },
   {
@@ -48,13 +45,12 @@ const PROJECTS = [
     gradient: 'from-emerald-600 via-teal-600 to-cyan-600',
     glow: 'rgba(16,185,129,0.3)',
     github: '#',
-    demo: '#',
     badge: 'LLM',
   },
 ]
 
 function ProjectCard({ project, index }) {
-  const { icon: Icon, title, description, tech, gradient, glow, github, demo, badge } = project
+  const { icon: Icon, title, description, tech, gradient, glow, github, badge } = project
   const cardRef = useRef(null)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
@@ -143,12 +139,6 @@ function ProjectCard({ project, index }) {
             className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white glass border border-white/10 hover:border-white/20 px-4 py-2 rounded-xl transition-all hover:scale-105"
           >
             <Github size={14} /> Code
-          </a>
-          <a
-            href={demo}
-            className="flex items-center gap-1.5 text-sm text-white px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 hover:scale-105 transition-all shadow-lg shadow-indigo-500/20"
-          >
-            <ExternalLink size={14} /> Live Demo
           </a>
         </div>
       </div>

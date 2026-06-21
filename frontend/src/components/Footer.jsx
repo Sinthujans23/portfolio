@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, Heart, Zap, Terminal, Send, CheckCircle } from 'lucide-react'
 import { hasSupabaseConfig, supabase } from '../lib/supabase'
 
@@ -165,14 +164,6 @@ export default function Footer() {
             </span>
           </div>
 
-          <motion.button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            whileHover={{ scale: 1.1, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 text-xs text-gray-500 hover:text-white glass border border-white/10 hover:border-indigo-500/40 px-4 py-2 rounded-xl transition-all"
-          >
-            Back to top
-          </motion.button>
         </div>
       </div>
     </footer>
