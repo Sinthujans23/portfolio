@@ -1,14 +1,20 @@
-﻿import { defineConfig } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-      },
+  cacheDir: 'C:/Users/ASUS/.vite_cache/portfolio',
+  resolve: {
+    alias: {
+      'lucide-react': path.resolve(__dirname, 'node_modules/lucide-react/dist/umd/lucide-react.js'),
     },
+  },
+  server: {
+    host: true,
+    port: 5173,
   },
 })

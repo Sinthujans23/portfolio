@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
-import ParticleBackground from './components/ParticleBackground'
+import GalaxyBackground from './components/GalaxyBackground'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
+import Hero from './components/HeroProfile'
 import About from './components/About'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
@@ -14,7 +14,7 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import ScrollProgress from './components/ScrollProgress'
 import BackToTop from './components/BackToTop'
-import CursorGlow from './components/CursorGlow'
+import SectionCursor from './components/SectionCursor'
 import SplashScreen from './components/SplashScreen'
 import Terminal from './components/Terminal'
 import SectionDots from './components/SectionDots'
@@ -49,9 +49,8 @@ function PortfolioApp() {
           <a href="#main-content" className="skip-link">Skip to content</a>
 
           <ScrollProgress />
-          <CursorGlow />
           <Grain />
-          <ParticleBackground />
+          <GalaxyBackground />
           <Navbar />
 
           <main id="main-content" className="relative z-10">
@@ -84,6 +83,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <SectionCursor />
         <Routes>
           <Route path="/" element={<PortfolioApp />} />
           <Route path="/articles" element={<AllArticles />} />

@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -127,12 +127,12 @@
 @layer utilities {
   .text-balance { text-wrap: balance; }
 
-  /* ═══════════════════════════════════════════
-     LIGHT MODE — applied via <html class="light">
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     LIGHT MODE â€” applied via <html class="light">
      Specificity: html(element) + .light(class) + .target(class) = (0,2,1)
-     beats Tailwind single-class utilities (0,1,0) — no !important needed
+     beats Tailwind single-class utilities (0,1,0) â€” no !important needed
      [data-force-dark] subtree is excluded from all overrides
-  ═══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
   /* Body & background */
   html.light body {
@@ -191,7 +191,7 @@
   html.light :not([data-force-dark]) .shadow-black\/20 { --tw-shadow-color: rgba(0,0,0,0.08); }
   html.light :not([data-force-dark]) .shadow-black\/60 { --tw-shadow-color: rgba(0,0,0,0.20); }
 
-  /* Glow orbs — reduce in light mode */
+  /* Glow orbs â€” reduce in light mode */
   html.light :not([data-force-dark]) .bg-indigo-700\/10  { background-color: rgba(67,56,202,0.05); }
   html.light :not([data-force-dark]) .bg-purple-700\/10  { background-color: rgba(109,40,217,0.05); }
   html.light :not([data-force-dark]) .bg-indigo-700\/8   { background-color: rgba(67,56,202,0.04); }
@@ -230,4 +230,99 @@
       radial-gradient(at 80% 50%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
       radial-gradient(at 0% 100%, rgba(139, 92, 246, 0.06) 0px, transparent 50%);
   }
+}
+
+/* Name and details on the left, with an orbiting portrait on the right. */
+.cosmic-hero { position: relative; isolation: isolate; min-height: 100svh; display: flex; flex-direction: column; overflow: hidden; padding: 95px 4vw 25px; color: #f5f0ec; background: radial-gradient(ellipse at 50% 26%, #3b24151c, transparent 50%), linear-gradient(180deg, #06080cbd, #08090dbc 85%, #08081166); }
+.cosmic-hero-grid { position: relative; width: 100%; max-width: 1500px; margin: auto; display: flex; flex-direction: column; align-items: center; }
+.cosmic-topline { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 15px; z-index: 1; }
+.cosmic-eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #c5bdb5; font-size: 10px; letter-spacing: .04em; }
+.cosmic-eyebrow > span { width: 5px; height: 5px; border-radius: 50%; background: #a5e5b7; box-shadow: 0 0 9px #a5e5b755; }
+.cosmic-coordinate { font: 8px/1.5 ui-monospace, monospace; letter-spacing: .16em; color: #a89b91; }
+.cosmic-intro-layout { position: relative; isolation: isolate; width: 100%; max-width: 1280px; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); align-items: center; gap: 40px; margin-top: 28px; }
+.cosmic-copy { position: relative; z-index: 1; width: 100%; min-width: 0; text-align: left; animation: cosmic-arrive 1.2s both; }
+.cosmic-profile-orbit { width: 100%; max-width: 470px; aspect-ratio: 1; display: grid; place-items: center; justify-self: end; }
+.cosmic-profile-stars { position: absolute; z-index: 0; left: -60px; top: -140px; width: calc(100% + 120px); height: calc(100% + 280px); pointer-events: none; }
+.cosmic-profile-photo { position: relative; z-index: 1; width: 60%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 1px solid #e8cbaa55; box-shadow: 0 0 40px #d3ac801a; background: #08090e; }
+.cosmic-profile-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+.cosmic-introduction { color: #bfb2a8; font-size: 13px; letter-spacing: .11em; margin-bottom: 8px; }
+.cosmic-copy h1 { font-size: clamp(68px, 8.8vw, 132px); font-weight: 500; letter-spacing: -.075em; line-height: .98; margin: 0 0 21px; text-shadow: 0 0 60px #f4d5b50b; }
+.cosmic-copy h1 > span { color: #e2b68e; }
+.cosmic-role { font-size: 13px; color: #e1cec0; letter-spacing: .015em; }
+.cosmic-role > span { color: #8b7464; padding: 0 10px; }
+.cosmic-description { font-size: 13px; color: #b0a69f; line-height: 1.8; max-width: 560px; margin: 17px 0 22px; }
+.cosmic-actions { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 12px; }
+.cosmic-actions a { display: inline-flex; align-items: center; justify-content: center; gap: 17px; padding: 12px 22px; border-radius: 30px; font-size: 12px; font-weight: 500; transition: transform .2s, background .2s; }
+.cosmic-actions a:hover { transform: translateY(-3px); }
+.cosmic-primary { background: #f2e8dd; color: #211911; }
+.cosmic-primary:hover { background: #e5c5a5; }
+.cosmic-secondary { border: 1px solid #e3c2a62e; color: #e6d9ce; }
+.cosmic-secondary:hover { background: #ffffff0d; }
+.cosmic-links { display: flex; align-items: center; justify-content: flex-start; gap: 18px; margin-top: 22px; color: #b7a99f; }
+.cosmic-links > a { padding: 5px; transition: color .2s; }
+.cosmic-links > a:hover { color: #f7dcc2; }
+.cosmic-location { display: inline-flex; align-items: center; gap: 6px; padding-left: 18px; border-left: 1px solid #ffffff20; font-size: 10px; }
+.cosmic-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; max-width: 1500px; margin: 32px auto 0; padding-top: 19px; border-top: 1px solid #ffffff12; font: 9px/1.5 ui-monospace, monospace; letter-spacing: .15em; color: #a69a91; }
+.cosmic-footer a { display: flex; align-items: center; gap: 10px; letter-spacing: .03em; }
+html.light .cosmic-hero { background-color: #08090e; }
+html:not(.light) .cosmic-hero {
+  background: radial-gradient(ellipse at 78% 48%, #284b7033, transparent 48%),
+    linear-gradient(180deg, #06080c80, #08090d80 85%, #08081140);
+}
+html:not(.light) .cosmic-profile-photo {
+  border-color: #d4e6ff88;
+  box-shadow: 0 0 28px #8ecaff26, 0 0 85px #96baff18;
+}
+
+/* Keep night-mode copy legible over the moving star field. */
+html:not(.light) .cosmic-copy { isolation: isolate; }
+html:not(.light) .cosmic-copy::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -25px -28px;
+  border-radius: 24px;
+  background: linear-gradient(100deg, #080b14ed 0%, #080b14db 65%, #080b1400 100%);
+  pointer-events: none;
+}
+html:not(.light) .cosmic-copy h1 { color: #ffffff; }
+html:not(.light) .cosmic-introduction,
+html:not(.light) .cosmic-role { color: #edf1f7; font-size: 14px; line-height: 1.8; }
+html:not(.light) .cosmic-description { color: #d5deea; font-size: 15px; line-height: 1.9; }
+html:not(.light) .cosmic-eyebrow,
+html:not(.light) .cosmic-coordinate,
+html:not(.light) .cosmic-links,
+html:not(.light) .cosmic-footer { color: #c5d1e2; }
+html:not(.light) .cosmic-role > span { color: #b7c5d9; }
+html:not(.light) .cosmic-secondary { color: #f8fafc; background-color: #0d1423e6; }
+html:not(.light) :is(.text-gray-400, .text-slate-400) { color: #d0d9e5; }
+html:not(.light) :is(.text-gray-500, .text-slate-500, .section-subtitle) { color: #bac7da; }
+html:not(.light) :is(.text-gray-600, .text-slate-600) { color: #adbcd1; }
+html:not(.light) :is(.text-gray-700, .text-slate-700) { color: #a4b3c7; }
+html:not(.light) .glass { background-color: #0e1423e6; }
+html:not(.light) .glass-strong { background-color: #111a2bf5; }
+html:not(.light) .form-input { background-color: #0b1120eb; color: #f8fafc; }
+html:not(.light) .form-input::placeholder { color: #a5b4c9; }
+@keyframes cosmic-arrive { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 767px) {
+  .cosmic-hero { padding: 90px 24px 24px; }
+  .cosmic-topline { justify-content: center; }
+  .cosmic-coordinate { display: none; }
+  .cosmic-intro-layout { grid-template-columns: 1fr; gap: 12px; }
+  .cosmic-copy { margin-top: 4px; text-align: center; }
+  .cosmic-profile-orbit { width: min(100%, 340px); justify-self: center; }
+  .cosmic-actions, .cosmic-links { justify-content: center; }
+  .cosmic-copy h1 { font-size: clamp(60px, 15vw, 110px); margin-bottom: 22px; }
+  .cosmic-introduction { font-size: 12px; }
+  .cosmic-role { font-size: 11px; line-height: 1.8; }
+  .cosmic-role > span { padding: 0 5px; }
+  .cosmic-description { font-size: 12px; margin: 16px auto 24px; }
+  .cosmic-description br { display: none; }
+  .cosmic-footer { margin-top: 32px; justify-content: center; }
+  .cosmic-footer > span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cosmic-copy { animation: none; }
+  .cosmic-hero a { transition: none; }
 }
