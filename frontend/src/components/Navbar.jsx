@@ -43,7 +43,7 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+      className={`site-navbar fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
         scrolled
           ? 'glass border-b border-white/[0.06] shadow-xl shadow-black/20 py-3'
           : 'py-5'
@@ -59,7 +59,7 @@ export default function Navbar() {
           <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-110 transition-transform">
             <Zap size={17} className="text-white" />
           </div>
-          <span className="font-black text-lg gradient-text tracking-tight">Sinthujan</span>
+          <span className="font-black text-lg gradient-text tracking-tight">Sinthujan S.</span>
         </button>
 
         {/* Desktop nav */}
@@ -71,7 +71,8 @@ export default function Navbar() {
               <button
                 key={label}
                 onClick={() => go(href)}
-                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                aria-current={isActive ? 'location' : undefined}
+                className={`site-nav-link relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive ? 'text-white' : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -154,7 +155,8 @@ export default function Navbar() {
                 <button
                   key={label}
                   onClick={() => go(href)}
-                  className="text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.06] transition-all"
+                  aria-current={active === href.slice(1) ? 'location' : undefined}
+                  className="site-nav-link text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.06] transition-all"
                 >
                   {label}
                 </button>

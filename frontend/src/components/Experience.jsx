@@ -1,3 +1,4 @@
+import CodeBackground from './CodeBackground'
 import { motion } from 'framer-motion'
 import { GraduationCap, Code2, Brain, Rocket, Sparkles } from 'lucide-react'
 
@@ -55,6 +56,7 @@ const TIMELINE = [
 export default function Experience() {
   return (
     <section id="experience" className="py-28 relative">
+      <CodeBackground section="experience" />
       <div className="absolute top-0 -right-40 w-80 h-80 bg-indigo-700/8 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container relative z-10">

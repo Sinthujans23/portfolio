@@ -1,3 +1,4 @@
+import CodeBackground from './CodeBackground'
 import { motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
 
@@ -89,6 +90,7 @@ function SkillBar({ name, level, delay, gradFrom, gradTo }) {
 export default function Skills() {
   return (
     <section id="skills" className="py-28 relative">
+      <CodeBackground section="skills" />
       <div className="absolute top-0 -right-40 w-96 h-96 bg-indigo-700/8 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container relative z-10">

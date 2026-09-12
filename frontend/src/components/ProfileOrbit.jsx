@@ -2,9 +2,11 @@ import { useEffect, useRef } from 'react'
 import { createStarMotion, stepStar } from '../lib/galaxyPhysics'
 import { createStarSprites, paintStar } from '../lib/starRendering'
 import { useTheme } from '../context/ThemeContext'
+import useStarScroll from '../lib/useStarScroll'
 
 export default function ProfileOrbit() {
   const canvasRef = useRef(null)
+  const scrollProgress = useStarScroll()
   const { theme } = useTheme()
   const themeRef = useRef(theme)
   const repaintRef = useRef(null)
@@ -33,16 +35,21 @@ export default function ProfileOrbit() {
       alpha: (0.18 + depth * 0.72) * Math.exp(-distance * 0.7),
       speed: (0.025 + Math.random() * 0.035) / (1 + distance * 2),
       phase: Math.random() * Math.PI * 2,
+      scatterDelay: Math.random() * 0.16,
+      scatterSpeed: 0.32 + Math.random() * 0.38,
       bright: depth > 0.9,
       flare: depth > 0.996,
       color: Math.random() < 0.5 ? 0 : 1 + Math.floor(Math.random() * 3),
     }})
     let size = 0, width = 0, height = 0, centerX = 0, centerY = 0, nameAngle = Math.PI
     let frame = 0, time = 0, last = 0, visible = false
+    let dispersal = 0
 
     const draw = (dt = 0) => {
       ctx.clearRect(0, 0, width, height)
       const exposure = themeRef.current === 'dark' ? 1.35 : 1
+      if (motion.matches) dispersal = 0
+      else if (dt) dispersal += (scrollProgress.current - dispersal) * (1 - Math.exp(-10 * dt))
       for (const star of stars) {
         const angle = star.towardName
           ? nameAngle + star.spread + Math.sin(time * 0.18 + star.phase) * 0.1
@@ -50,15 +57,18 @@ export default function ProfileOrbit() {
         const radius = star.radius
           + Math.sin(angle * 3 + star.radius * 35 - time * 0.3) * 0.012
           + Math.sin(time * 0.4 + star.phase) * 0.009
-        const x = centerX + size * Math.cos(angle) * radius
-        const y = centerY + size * Math.sin(angle) * radius
+        const amount = Math.max(0, (dispersal - star.scatterDelay) / (1 - star.scatterDelay))
+        const spread = amount * amount * (3 - 2 * amount)
+        const direction = Math.cos(angle) < 0 ? -1 : 1
+        const x = centerX + size * Math.cos(angle) * radius + direction * spread * width * star.scatterSpeed
+        const y = centerY + size * Math.sin(angle) * radius + Math.sin(star.phase) * spread * height * 0.22
         const edge = Math.max(0, Math.min(1, x / 70, (width - x) / 70, y / 70, (height - y) / 70))
         if (!edge) continue
         if (dt) stepStar(star, x, y, pointer, 75, dt)
         const twinkle = 0.84 + Math.sin(time * 0.55 + star.phase) * 0.16
         paintStar(ctx, sprites, star, x + star.offsetX, y + star.offsetY,
           star.size * Math.max(0.65, size / 480) * (1 + star.glow),
-          (star.alpha * twinkle * exposure + star.glow * 0.6) * edge, star.glow * edge)
+          (star.alpha * twinkle * exposure + star.glow * 0.6) * edge * (1 - spread * 0.45), star.glow * edge)
       }
       ctx.globalAlpha = 1
       ctx.shadowBlur = 0
@@ -131,13 +141,13 @@ export default function ProfileOrbit() {
       document.removeEventListener('visibilitychange', sync)
       motion.removeEventListener('change', sync)
     }
-  }, [])
+  }, [scrollProgress])
 
   return (
     <div className="cosmic-profile-orbit">
       <canvas ref={canvasRef} className="cosmic-profile-stars" aria-hidden="true" />
       <div className="cosmic-profile-photo">
-        <img src="/profile.jpg" alt="Sivarajan Sinthujan" fetchPriority="high" draggable={false} />
+        <img src="/profile.jpg" alt="Sinthujan S." fetchPriority="high" draggable={false} />
       </div>
     </div>
   )

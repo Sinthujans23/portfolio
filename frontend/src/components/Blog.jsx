@@ -1,3 +1,4 @@
+import CodeBackground from './CodeBackground'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate, Link } from 'react-router-dom'
@@ -40,6 +41,7 @@ export default function Blog() {
 
   return (
     <section id="blog" className="py-28 relative">
+      <CodeBackground section="blog" />
       <div className="absolute top-0 -left-40 w-80 h-80 bg-indigo-700/8 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container relative z-10">

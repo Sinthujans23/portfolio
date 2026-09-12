@@ -10,7 +10,7 @@ const BANNER = `
   ███████║██║██║ ╚████║   ██║   ██║  ██║╚██████╔╝
   ╚══════╝╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝
 
-  Welcome to Sinthujan's terminal. Type 'help' to get started.
+  Welcome to Sinthujan S.'s terminal. Type 'help' to get started.
 `.trim()
 
 const COMMANDS = {
@@ -23,7 +23,7 @@ const COMMANDS = {
   clear       — Clear the terminal
   exit        — Close the terminal`,
 
-  whoami: () => `Sinthujan — AI Developer & ML Enthusiast
+  whoami: () => `Sinthujan S. — AI Developer & ML Enthusiast
   📍 Sri Lanka 🇱🇰
   🎓 AI Undergraduate Student
   💡 Aspiring AI Entrepreneur

@@ -1,35 +1,16 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, Mail, Github, Linkedin, MapPin, CheckCircle, Loader2, Sparkles, Copy, Check } from 'lucide-react'
+import { Send, Mail, Github, Linkedin, CheckCircle, Loader2, Sparkles } from 'lucide-react'
 import Confetti from './Confetti'
 import { hasSupabaseConfig, supabase } from '../lib/supabase'
 
 const EMAIL = 'sinthuu07@gmail.com'
 
-const INFO = [
-  { icon: Mail,     label: 'Email',    value: EMAIL,                          href: `mailto:${EMAIL}`, copyable: true },
-  { icon: MapPin,   label: 'Location', value: 'Sri Lanka 🇱🇰',               href: null },
-  { icon: Github,   label: 'GitHub',   value: 'github.com/Sinthujans23',                              href: 'https://github.com/Sinthujans23' },
-  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/sivarajan-sinthujan', href: 'https://www.linkedin.com/in/sivarajan-sinthujan-71a93b2a2' },
+const SOCIALS = [
+  { icon: Mail, label: 'Email', href: `mailto:${EMAIL}` },
+  { icon: Github, label: 'GitHub', href: 'https://github.com/Sinthujans23' },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/sivarajan-sinthujan-71a93b2a2' },
 ]
-
-function CopyButton({ text }) {
-  const [copied, setCopied] = useState(false)
-  const copy = () => {
-    navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-  return (
-    <button
-      onClick={copy}
-      title="Copy email"
-      className="ml-1.5 p-1 rounded-lg text-gray-600 hover:text-indigo-400 hover:bg-indigo-500/10 transition-all"
-    >
-      {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
-    </button>
-  )
-}
 
 const INITIAL = { name: '', email: '', message: '' }
 
@@ -98,71 +79,39 @@ export default function Contact() {
           <p className="section-subtitle">Have a project in mind? Let's build something intelligent together.</p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-8 max-w-5xl mx-auto">
-
-          {/* ── Info panel ── */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-2 space-y-4"
-          >
-            <div className="glass border border-white/[0.07] rounded-3xl p-7">
-              <h3 className="text-xl font-bold text-white mb-2">Let's Connect</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                I'm always open to new opportunities, AI project collaborations, or just a great
-                conversation about technology and the future of intelligence.
-              </p>
-
-              <div className="space-y-5">
-                {INFO.map(({ icon: Icon, label, value, href, copyable }) => (
-                  <div key={label} className="flex items-start gap-3.5">
-                    <div className="w-9 h-9 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
-                      <Icon size={16} className="text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-600 uppercase tracking-wider mb-0.5">{label}</p>
-                      <div className="flex items-center">
-                        {href ? (
-                          <a
-                            href={href}
-                            className="text-sm text-gray-300 hover:text-indigo-300 transition-colors font-medium"
-                          >
-                            {value}
-                          </a>
-                        ) : (
-                          <p className="text-sm text-gray-300 font-medium">{value}</p>
-                        )}
-                        {copyable && <CopyButton text={value} />}
-                      </div>
-                    </div>
-                  </div>
+        <div className="contact-layout">
+          <div id="contact-star-stage" className="contact-star-stage">
+            <canvas className="contact-star-canvas" aria-hidden="true" />
+            <div className="contact-star-copy">
+              <h3 className="text-white font-bold">Connect</h3>
+              <div className="contact-star-socials">
+                {SOCIALS.map(({ icon: Icon, href, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith('https:') ? '_blank' : undefined}
+                    rel={href.startsWith('https:') ? 'noopener noreferrer' : undefined}
+                    aria-label={label}
+                    title={label}
+                    className="glass border border-white/10 rounded-xl flex items-center justify-center text-gray-300 hover:text-indigo-400 hover:border-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-4 transition-colors"
+                  >
+                    <Icon size={17} />
+                  </a>
                 ))}
               </div>
+              <p className="text-gray-300">Open to AI roles, collaborations, and freelance projects.</p>
             </div>
-
-            {/* Availability card */}
-            <div className="glass border border-emerald-500/20 rounded-2xl p-5 flex items-center gap-3">
-              <span className="relative flex w-3 h-3 flex-shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex w-3 h-3 rounded-full bg-emerald-400" />
-              </span>
-              <p className="text-sm text-gray-300">
-                Currently <strong className="text-emerald-300">available</strong> for AI project collaborations and internship opportunities.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* ── Contact form ── */}
+          </div>
+          <div className="contact-panels min-w-0">
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-3"
+            className="min-w-0"
           >
-            <div className="glass border border-white/[0.07] rounded-3xl p-8">
+            <div className="glass border border-white/[0.07] rounded-3xl p-6 sm:p-8">
+              <h3 className="text-xl font-bold text-white mb-6">Send a Message</h3>
               <AnimatePresence mode="wait">
                 {sent ? (
                   <motion.div
@@ -272,6 +221,7 @@ export default function Contact() {
               </AnimatePresence>
             </div>
           </motion.div>
+          </div>
         </div>
       </div>
       <Confetti trigger={confetti} />

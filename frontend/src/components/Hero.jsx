@@ -9,7 +9,7 @@ const SOCIALS = [
   { icon: Mail,     href: 'mailto:sinthuu07@gmail.com', label: 'Email' },
 ]
 
-const ROLES = ['AI Developer', 'ML Enthusiast', 'Software Engineer', 'LLM Engineer']
+const ROLES = ['AI Developer', 'ML Enthusiast', 'LLM Engineer']
 
 const ROLE_COLORS = [
   'from-indigo-400 to-purple-400',
@@ -84,7 +84,7 @@ export default function Hero() {
             {/* Name */}
             <motion.h1 {...fadeUp(0.2)} className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] mb-4">
               Hi, I'm{' '}
-              <span className="gradient-text">Sinthujan</span>
+              <span className="gradient-text">Sinthujan S.</span>
             </motion.h1>
 
             {/* Typewriter role */}
@@ -192,7 +192,7 @@ export default function Hero() {
             >
               <img
                 src="/profile.jpg"
-                alt="Sinthujan — AI Developer"
+                alt="Sinthujan S. — AI Developer"
                 className="w-full h-full object-cover object-top"
                 draggable={false}
               />

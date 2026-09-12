@@ -1,3 +1,4 @@
+import CodeBackground from './CodeBackground'
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Github, Bot, Dumbbell, Droplets, MessageSquare, Sparkles } from 'lucide-react'
@@ -155,6 +156,7 @@ export default function Projects() {
 
   return (
     <section id="projects" className="py-28 relative">
+      <CodeBackground section="projects" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-64 bg-purple-900/8 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="container relative z-10">

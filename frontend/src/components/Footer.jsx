@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Github, Linkedin, Mail, Heart, Zap, Terminal, Send, CheckCircle } from 'lucide-react'
+import { Heart, Zap, Terminal, Send, CheckCircle } from 'lucide-react'
 import { hasSupabaseConfig, supabase } from '../lib/supabase'
 
 const LINKS = [
@@ -10,12 +10,6 @@ const LINKS = [
   { label: 'Experience', href: '#experience' },
   { label: 'Blog',       href: '#blog'       },
   { label: 'Contact',    href: '#contact'    },
-]
-
-const SOCIALS = [
-  { icon: Github,   href: 'https://github.com/Sinthujans23',                              label: 'GitHub'   },
-  { icon: Linkedin, href: 'https://www.linkedin.com/in/sivarajan-sinthujan-71a93b2a2',    label: 'LinkedIn' },
-  { icon: Mail,     href: 'mailto:sinthuu07@gmail.com',                                   label: 'Email'    },
 ]
 
 function NewsletterForm() {
@@ -83,7 +77,7 @@ export default function Footer() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
 
       <div className="container relative">
-        <div className="grid md:grid-cols-4 gap-8 mb-10">
+        <div className="grid md:grid-cols-3 gap-8 mb-10">
 
           {/* Brand */}
           <div className="md:col-span-1">
@@ -91,7 +85,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
                 <Zap size={15} className="text-white" />
               </div>
-              <span className="font-black text-lg gradient-text">Sinthujan</span>
+              <span className="font-black text-lg gradient-text">Sinthujan S.</span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed">
               AI Developer building intelligent systems that solve real-world problems.
@@ -115,28 +109,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Social */}
-          <div>
-            <h4 className="text-sm font-semibold text-gray-300 mb-4 uppercase tracking-wider">Connect</h4>
-            <div className="flex gap-3">
-              {SOCIALS.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-10 h-10 glass border border-white/10 hover:border-indigo-500/40 rounded-xl flex items-center justify-center text-gray-400 hover:text-indigo-400 hover:scale-110 hover:-translate-y-0.5 transition-all"
-                >
-                  <Icon size={17} />
-                </a>
-              ))}
-            </div>
-            <p className="text-xs text-gray-600 mt-4">
-              Open to AI roles, collaborations, and freelance projects.
-            </p>
-          </div>
-
           {/* Newsletter */}
           <div>
             <h4 className="text-sm font-semibold text-gray-300 mb-1 uppercase tracking-wider">Newsletter</h4>
@@ -152,7 +124,7 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <p className="text-xs text-gray-600 flex items-center gap-1.5">
-              © {new Date().getFullYear()} Sinthujan. Made with{' '}
+              © {new Date().getFullYear()} Sinthujan S. Made with{' '}
               <Heart size={12} className="text-red-500 fill-red-500" /> &{' '}
               <span className="text-indigo-400">AI</span>. All rights reserved.
             </p>

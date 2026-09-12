@@ -61,6 +61,45 @@
   background: currentColor;
 }
 
+.section-cursor[data-mode='home'] { --cursor-color: #83e4ff; }
+.section-cursor[data-mode='home'] .section-cursor__mark {
+  filter: drop-shadow(0 0 2px #020617) drop-shadow(0 0 4px #38bdf866);
+}
+.section-cursor[data-mode='home'] .section-cursor__shape {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(currentColor, currentColor) left top / 7px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) left top / 1px 7px no-repeat,
+    linear-gradient(currentColor, currentColor) right top / 7px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) right top / 1px 7px no-repeat,
+    linear-gradient(currentColor, currentColor) left bottom / 7px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) left bottom / 1px 7px no-repeat,
+    linear-gradient(currentColor, currentColor) right bottom / 7px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) right bottom / 1px 7px no-repeat;
+}
+.section-cursor[data-mode='home'] .section-cursor__accent {
+  width: 11px;
+  height: 11px;
+  border: 0;
+  border-radius: 0;
+  opacity: .8;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(currentColor, currentColor) center / 1px 100% no-repeat,
+    linear-gradient(currentColor, currentColor) center / 100% 1px no-repeat;
+}
+.section-cursor[data-mode='home'] .section-cursor__point {
+  width: 2px;
+  height: 2px;
+  background: #f0faff;
+  box-shadow: 0 0 7px #7dd3fc;
+}
+.section-cursor[data-mode='home'][data-interactive='true'] .section-cursor__accent {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
 .section-cursor[data-mode='about'] { --cursor-color: #a7e6c5; }
 .section-cursor[data-mode='about'] .section-cursor__accent {
   width: 15px;

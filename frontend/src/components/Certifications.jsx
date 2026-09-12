@@ -1,3 +1,4 @@
+import CodeBackground from './CodeBackground'
 import { motion } from 'framer-motion'
 import { Award, Bot, Box, ExternalLink, Sparkles } from 'lucide-react'
 
@@ -23,6 +24,7 @@ const CERTS = [
 export default function Certifications() {
   return (
     <section id="certifications" className="py-28 relative">
+      <CodeBackground section="certifications" />
       <div className="absolute bottom-0 -left-40 w-80 h-80 bg-purple-700/8 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container relative z-10">

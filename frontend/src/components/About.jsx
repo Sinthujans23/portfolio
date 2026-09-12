@@ -1,6 +1,7 @@
+import CodeBackground from './CodeBackground'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Brain, Code2, Rocket, Target, Sparkles, Github, Star, Users, BookOpen } from 'lucide-react'
+import { Brain, Code2, Rocket, Target, Github, Star, Users, BookOpen } from 'lucide-react'
 
 function useGitHubStats() {
   const [stats, setStats] = useState(null)
@@ -137,14 +138,12 @@ export default function About() {
   const ghStats = useGitHubStats()
   return (
     <section id="about" className="py-28 relative">
+      <CodeBackground section="about" />
       <div className="absolute top-1/2 -left-40 w-96 h-96 bg-purple-700/8 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none" />
 
       <div className="container relative z-10">
         {/* Heading */}
         <motion.div {...fadeUp()} className="text-center mb-16">
-          <p className="text-indigo-400 font-semibold text-sm tracking-widest uppercase mb-3 flex items-center justify-center gap-2">
-            <Sparkles size={14} /> Who I Am
-          </p>
           <h2 className="section-title">About Me</h2>
           <p className="section-subtitle">Get to know the person behind the code</p>
         </motion.div>
