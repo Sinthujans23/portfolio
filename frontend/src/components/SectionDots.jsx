@@ -1,3 +1,4 @@
+import { scrollToSection } from '../lib/scrollToSection'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
@@ -7,7 +8,6 @@ const SECTIONS = [
   { id: 'skills',         label: 'Skills'       },
   { id: 'projects',       label: 'Projects'     },
   { id: 'experience',     label: 'Experience'   },
-  { id: 'certifications', label: 'Certs'         },
   { id: 'blog',           label: 'Blog'          },
   { id: 'contact',        label: 'Contact'       },
 ]
@@ -29,7 +29,7 @@ export default function SectionDots() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const go = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  const go = id => scrollToSection(id)
 
   return (
     <div className="fixed right-5 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-3">

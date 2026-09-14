@@ -1,3 +1,4 @@
+import { scrollToSection } from '../lib/scrollToSection'
 ﻿import { Github, Linkedin, Mail, ArrowUpRight, ArrowDown, MapPin } from 'lucide-react'
 import ProfileOrbit from './ProfileOrbit'
 import { useRef } from 'react'
@@ -39,7 +40,14 @@ export default function HeroProfile() {
         <ProfileOrbit />
         </div>
       </div>
-      <div className="cosmic-footer"><span><AIText delay={700}>IDEAS. INTELLIGENCE. IMPACT.</AIText></span><a href="#about"><AIText delay={900}>Scroll to discover</AIText> <ArrowDown size={14} /></a><span><AIText delay={850}>PORTFOLIO / 2026</AIText></span></div>
+      <div className="cosmic-footer"><span><AIText delay={700}>IDEAS. INTELLIGENCE. IMPACT.</AIText></span><a
+          href="#about"
+          className="hero-scroll-link"
+          onClick={event => { event.preventDefault(); scrollToSection('#about') }}
+        >
+          <span className="hero-scroll-icon" aria-hidden="true"><ArrowDown size={17} /></span>
+          <span className="hero-scroll-label">Discover more<span>About me</span></span>
+        </a><span><AIText delay={850}>PORTFOLIO / 2026</AIText></span></div>
     </section>
   )
 }

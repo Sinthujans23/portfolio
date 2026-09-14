@@ -1,3 +1,4 @@
+import ArticleBody from '../components/ArticleBody'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -13,6 +14,10 @@ export default function ArticleView() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
+    setArticle(null)
+    setViews(0)
+    window.scrollTo({ top: 0, behavior: 'instant' })
     const staticMatch = STATIC_ARTICLES.find(a => a.slug === slug)
 
     if (hasSupabaseConfig) {
@@ -20,6 +25,7 @@ export default function ArticleView() {
         .from('articles')
         .select('*')
         .eq('slug', slug)
+        .eq('published', true)
         .single()
         .then(({ data }) => {
           if (data) {
@@ -51,7 +57,7 @@ export default function ArticleView() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-mesh flex items-center justify-center">
+      <div className="min-h-screen bg-[#0b0d12] flex items-center justify-center">
         <div className="w-8 h-8 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
       </div>
     )
@@ -59,7 +65,7 @@ export default function ArticleView() {
 
   if (!article) {
     return (
-      <div className="min-h-screen bg-mesh flex flex-col items-center justify-center gap-4 text-center px-4">
+      <div className="min-h-screen bg-[#0b0d12] flex flex-col items-center justify-center gap-4 text-center px-4">
         <p className="text-gray-400 text-lg">Article not found.</p>
         <button
           onClick={() => navigate('/articles')}
@@ -72,7 +78,7 @@ export default function ArticleView() {
   }
 
   return (
-    <div className="min-h-screen bg-mesh text-white">
+    <div className="min-h-screen bg-[#0b0d12] text-white">
       <div className="container py-12 max-w-3xl">
 
         <motion.button
@@ -101,11 +107,12 @@ export default function ArticleView() {
           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${TAG_COLORS[article.tag] || 'text-gray-300 bg-white/5 border-white/10'}`}>
             {article.tag}
           </span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mt-5 mb-4 leading-tight">{article.title}</h1>
+          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white mt-5 mb-4 leading-tight">{article.title}</h1>
           {article.excerpt && (
             <p className="text-gray-400 text-lg leading-relaxed mb-6">{article.excerpt}</p>
           )}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 pb-8 border-b border-white/[0.07]">
+          <p className="text-sm font-medium text-gray-200 mb-5">By Sinthujan S.</p>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 pb-8 border-b border-white/[0.07]">
             {article.date && (
               <span className="flex items-center gap-1.5"><Calendar size={13} /> {article.date}</span>
             )}
@@ -123,16 +130,10 @@ export default function ArticleView() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mt-8"
+          className="mt-10 pb-16"
         >
           {article.content ? (
-            <div className="space-y-4">
-              {article.content.split('\n').map((para, i) =>
-                para.trim()
-                  ? <p key={i} className="text-gray-300 leading-relaxed text-base">{para}</p>
-                  : <div key={i} className="h-3" />
-              )}
-            </div>
+            <ArticleBody content={article.content} />
           ) : (
             <div className="glass border border-white/[0.07] rounded-2xl p-10 text-center">
               <p className="text-gray-500 mb-2 text-base">Full article coming soon.</p>

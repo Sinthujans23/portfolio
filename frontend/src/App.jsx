@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import GalaxyBackground from './components/GalaxyBackground'
 import Navbar from './components/Navbar'
@@ -9,12 +9,10 @@ import About from './components/About'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
 import Experience from './components/Experience'
-import Certifications from './components/Certifications'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import ScrollProgress from './components/ScrollProgress'
 import BackToTop from './components/BackToTop'
-import SectionCursor from './components/SectionCursor'
 import SplashScreen from './components/SplashScreen'
 import Terminal from './components/Terminal'
 import SectionDots from './components/SectionDots'
@@ -24,9 +22,25 @@ import AllArticles from './pages/AllArticles'
 import WriteArticle from './pages/WriteArticle'
 import ArticleView from './pages/ArticleView'
 
+let introCompleted = false
+
 function PortfolioApp() {
-  const [ready, setReady] = useState(false)
+  const location = useLocation()
+  const [ready, setReady] = useState(() => introCompleted || Boolean(location.hash))
   const [terminalOpen, setTerminalOpen] = useState(false)
+
+  useEffect(() => {
+    if (!ready) return
+    introCompleted = true
+    const frame = requestAnimationFrame(() => {
+      const target = document.getElementById(location.hash.slice(1))
+      if (target) {
+        const offset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
+        window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset), behavior: 'instant' })
+      }
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [ready, location.hash])
 
   useEffect(() => {
     const onKeyDown = e => {
@@ -42,10 +56,10 @@ function PortfolioApp() {
 
   return (
     <div>
-      <SplashScreen onDone={() => setReady(true)} />
+      {!ready && <SplashScreen onDone={() => setReady(true)} />}
 
       {ready && (
-        <div className="relative min-h-screen bg-mesh text-white overflow-x-hidden">
+        <div className="relative min-h-screen bg-mesh text-white overflow-x-clip">
           <a href="#main-content" className="skip-link">Skip to content</a>
 
           <ScrollProgress />
@@ -59,7 +73,6 @@ function PortfolioApp() {
             <Skills />
             <Projects />
             <Experience />
-            <Certifications />
             <Blog />
             <Contact />
           </main>
@@ -83,7 +96,6 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
-        <SectionCursor />
         <Routes>
           <Route path="/" element={<PortfolioApp />} />
           <Route path="/articles" element={<AllArticles />} />

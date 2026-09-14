@@ -67,6 +67,10 @@ export default function GalaxyBackground() {
     const render = (now) => {
       raf = null
       if (document.hidden) return
+      if (!reducedMotion.matches && previousTime && now - previousTime < 1000 / 30) {
+        raf = requestAnimationFrame(render)
+        return
+      }
 
       const seconds = previousTime ? Math.min((now - previousTime) / 1000, 0.15) : 1 / 60
       const step = Math.min(seconds * 60, 2)
@@ -85,7 +89,7 @@ export default function GalaxyBackground() {
       if (contactCtx) {
         const localWidth = contact.width + contactPadding * 2
         const localHeight = contact.height + contactPadding * 2
-        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5)
         if (contactWidth !== localWidth || contactHeight !== localHeight || contactCanvas.width !== Math.round(localWidth * pixelRatio)) {
           contactWidth = localWidth
           contactHeight = localHeight
@@ -162,15 +166,15 @@ export default function GalaxyBackground() {
     const resize = () => {
       width = window.innerWidth
       height = window.innerHeight
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5)
       canvas.width = Math.round(width * pixelRatio)
       canvas.height = Math.round(height * pixelRatio)
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
 
-      const count = Math.min(2500, Math.max(900, Math.floor((width * height) / 425)))
+      const count = Math.min(1200, Math.max(350, Math.floor((width * height) / 900)))
       if (stars.length > count) stars.length = count
       while (stars.length < count) stars.push(createStar())
-      const contactCount = width < 768 ? 3200 : 5500
+      const contactCount = width < 768 ? 1400 : 2600
       const extraCount = contactCount - count
       if (contactStars.length > extraCount) contactStars.length = extraCount
       while (contactStars.length < extraCount) contactStars.push(createStar(true))

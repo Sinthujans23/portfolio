@@ -1,7 +1,7 @@
 import CodeBackground from './CodeBackground'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Brain, Code2, Rocket, Target, Github, Star, Users, BookOpen } from 'lucide-react'
+import { Brain, Code2, Github, Star, Users, BookOpen } from 'lucide-react'
 
 function useGitHubStats() {
   const [stats, setStats] = useState(null)
@@ -61,71 +61,12 @@ function GitHubCard({ stats }) {
   )
 }
 
-function useCountUp(target, duration = 1600) {
-  const [count, setCount] = useState(0)
-  const ref = useRef(null)
-  const started = useRef(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started.current) {
-        started.current = true
-        const start = performance.now()
-        const tick = now => {
-          const p = Math.min((now - start) / duration, 1)
-          const ease = 1 - Math.pow(1 - p, 3)
-          setCount(Math.floor(ease * target))
-          if (p < 1) requestAnimationFrame(tick)
-          else setCount(target)
-        }
-        requestAnimationFrame(tick)
-      }
-    }, { threshold: 0.3 })
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [target, duration])
-
-  return { count, ref }
-}
-
-function AnimatedStat({ value, label, delay }) {
-  const numeric = parseInt(value)
-  const suffix = value.replace(String(numeric), '')
-  const { count, ref } = useCountUp(numeric)
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay }}
-      whileHover={{ scale: 1.04 }}
-      className="glass border border-white/[0.07] hover:border-indigo-500/25 rounded-2xl p-6 text-center transition-all group"
-    >
-      <p className="text-4xl font-black gradient-text mb-1 group-hover:scale-105 transition-transform inline-block">
-        {count}{suffix}
-      </p>
-      <p className="text-xs text-gray-500 font-medium tracking-wide">{label}</p>
-    </motion.div>
-  )
-}
-
 const HIGHLIGHTS = [
   { icon: Brain,    title: 'AI & ML Focus',     desc: 'Deep expertise in building intelligent systems with cutting-edge ML frameworks and architectures.' },
   { icon: Code2,    title: 'Full-Stack Dev',     desc: 'End-to-end development—from beautiful UIs to backend APIs and AI model integration.' },
-  { icon: Rocket,   title: 'Startup Mindset',   desc: 'Entrepreneurial approach: shipping fast, iterating, and solving real problems with technology.' },
-  { icon: Target,   title: 'Vision Driven',     desc: 'Aspiring AI Entrepreneur & CEO—building products that leverage AI for lasting impact.' },
 ]
 
-const STATS = [
-  { value: '10+', label: 'Projects Built'    },
-  { value: '20+', label: 'Technologies'      },
-  { value: '5+',  label: 'AI Models Trained' },
-  { value: '8+',  label: 'Certifications'    },
-]
+
 
 const fadeUp = (delay = 0) => ({
   initial:    { opacity: 0, y: 30 },
@@ -137,7 +78,7 @@ const fadeUp = (delay = 0) => ({
 export default function About() {
   const ghStats = useGitHubStats()
   return (
-    <section id="about" className="py-28 relative">
+    <section id="about" className="min-h-screen py-28 relative">
       <CodeBackground section="about" />
       <div className="absolute top-1/2 -left-40 w-96 h-96 bg-purple-700/8 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none" />
 
@@ -148,16 +89,13 @@ export default function About() {
           <p className="section-subtitle">Get to know the person behind the code</p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-8 items-start mb-12">
+        <div className="grid lg:grid-cols-5 gap-8 items-start">
           {/* Bio card */}
           <motion.div
             {...fadeUp(0.15)}
             className="lg:col-span-3 glass border border-white/[0.07] rounded-3xl p-8 md:p-10"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-5 leading-snug">
-              Passionate AI Developer from{' '}
-              <span className="gradient-text">Sri Lanka</span> 🇱🇰
-            </h3>
+          
 
             <div className="space-y-4 text-gray-400 leading-relaxed text-[0.95rem]">
               <p>
@@ -170,19 +108,14 @@ export default function About() {
                 orchestration systems to IoT solutions and RAG-powered knowledge bases. I love taking an
                 idea from concept to a working product that delivers real value.
               </p>
-              <p>
-                My ultimate goal is to become an{' '}
-                <strong className="text-indigo-300">AI Entrepreneur and CEO</strong>, founding a company
-                that uses artificial intelligence to solve industry-wide problems and creates products
-                that genuinely improve people's lives.
-              </p>
+             
             </div>
 
             {/* Quick facts */}
             <div className="mt-8 grid sm:grid-cols-2 gap-3">
               {[
                 ['🎓', 'AI Undergraduate Student'],
-                ['🌍', 'Based in Sri Lanka'],
+      
                 ['💡', 'AI Entrepreneur Aspirant'],
                 ['🔭', 'Currently building AI Agents'],
               ].map(([emoji, text]) => (
@@ -212,13 +145,6 @@ export default function About() {
               </motion.div>
             ))}
           </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {STATS.map(({ value, label }, i) => (
-            <AnimatedStat key={label} value={value} label={label} delay={0.3 + i * 0.07} />
-          ))}
         </div>
       </div>
     </section>

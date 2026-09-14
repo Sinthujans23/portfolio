@@ -129,21 +129,21 @@ export default function AllArticles() {
   }
 
   return (
-    <div className="min-h-screen bg-mesh text-white">
-      <div className="container py-12">
+    <div className="min-h-screen bg-[#0b0d12] text-white">
+      <div className="container py-12 max-w-5xl">
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex flex-wrap items-center justify-between gap-5 mb-10">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/#blog')}
               className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors glass border border-white/10 hover:border-white/20 px-4 py-2 rounded-xl text-sm"
             >
               <ArrowLeft size={15} /> Back
             </button>
             <div>
-              <h1 className="text-2xl font-bold gradient-text">All Articles</h1>
-              <p className="text-gray-600 text-sm">{filtered.length} articles</p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white">Journal</h1>
+              <p className="text-gray-400 text-sm">{filtered.length} articles</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -159,10 +159,12 @@ export default function AllArticles() {
               onClick={() => openModal('write')}
               className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-sm font-semibold text-white hover:opacity-90 transition-all shadow-lg shadow-indigo-500/20"
             >
-              <PenLine size={15} /> Write Article
+              <PenLine size={15} /> New story
             </button>
           </div>
         </div>
+
+        <p className="text-gray-400 text-lg max-w-2xl mb-10">Notes on building software, working with AI, and learning through real projects.</p>
 
         {/* Search + Tags */}
         <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -171,7 +173,7 @@ export default function AllArticles() {
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search articles..."
+              aria-label="Search articles" placeholder="Search stories and ideas"
               className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500/50 transition-all"
             />
           </div>
@@ -200,7 +202,7 @@ export default function AllArticles() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-center py-24 text-gray-600"
+              className="text-center py-24 text-gray-400"
             >
               <PenLine size={40} className="mx-auto mb-4 opacity-30" />
               <p>No articles found.</p>
@@ -208,7 +210,7 @@ export default function AllArticles() {
           )}
         </AnimatePresence>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="flex flex-col gap-5">
           <AnimatePresence mode="popLayout">
             {filtered.map((article, i) => (
               <motion.div
@@ -221,7 +223,7 @@ export default function AllArticles() {
               >
                 <Link
                   to={`/articles/${article.slug}`}
-                  className="group glass border border-white/[0.07] hover:border-white/15 rounded-3xl overflow-hidden flex flex-col transition-all hover:-translate-y-1 block"
+                  className="group glass border border-white/[0.07] hover:border-white/15 rounded-3xl overflow-hidden flex flex-col transition-all hover:bg-white/[0.03]"
                 >
                   <div className={`h-1 bg-gradient-to-r ${article.gradient}`} />
                   <div className="flex flex-col flex-1 p-6">
@@ -229,20 +231,20 @@ export default function AllArticles() {
                       <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${TAG_COLORS[article.tag] || 'text-gray-300 bg-white/5 border-white/10'}`}>
                         {article.tag}
                       </span>
-                      <span className="text-xs text-gray-600 font-mono">{article.date}</span>
+                      <span className="text-xs text-gray-400 font-mono">{article.date}</span>
                     </div>
-                    <h3 className="text-sm font-bold text-white leading-snug mb-3 group-hover:gradient-text transition-all line-clamp-2">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug mb-3 group-hover:gradient-text transition-all line-clamp-2">
                       {article.title}
                     </h3>
-                    <p className="text-xs text-gray-500 leading-relaxed flex-1 mb-5 line-clamp-3">{article.excerpt}</p>
+                    <p className="text-base text-gray-400 leading-relaxed flex-1 mb-5 line-clamp-3">{article.excerpt}</p>
                     <div className="flex items-center justify-between pt-3 border-t border-white/5">
-                      <div className="flex items-center gap-3 text-xs text-gray-600">
+                      <div className="flex items-center gap-3 text-xs text-gray-400">
                         <span className="flex items-center gap-1"><Clock size={11} /> {article.readTime}</span>
                         {views[article.slug] > 0 && (
                           <span className="flex items-center gap-1"><Eye size={11} /> {views[article.slug]}</span>
                         )}
                       </div>
-                      <span className="text-xs text-gray-600 group-hover:text-indigo-400 transition-colors">Read →</span>
+                      <span className="text-xs text-gray-400 group-hover:text-indigo-400 transition-colors">Read →</span>
                     </div>
                   </div>
                 </Link>
@@ -251,7 +253,7 @@ export default function AllArticles() {
                 {isAdmin && article.fromDb && (
                   <button
                     onClick={() => { setDeletingSlug(article.slug); setDeleteError('') }}
-                    className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 opacity-0 group-hover/card:opacity-100 hover:bg-red-500/25 hover:border-red-500/40 transition-all"
+                    className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 opacity-100 hover:bg-red-500/25 hover:border-red-500/40 transition-all"
                     title="Delete article"
                   >
                     <Trash2 size={13} />
@@ -322,7 +324,7 @@ export default function AllArticles() {
             <p className="text-gray-400 text-sm mb-2 leading-relaxed">
               This will permanently remove the article. This action cannot be undone.
             </p>
-            <p className="text-gray-600 text-xs font-mono mb-6 truncate">{deletingSlug}</p>
+            <p className="text-gray-400 text-xs font-mono mb-6 truncate">{deletingSlug}</p>
             {deleteError && (
               <p className="text-xs text-red-400 mb-4">{deleteError}</p>
             )}

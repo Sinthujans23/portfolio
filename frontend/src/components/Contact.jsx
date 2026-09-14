@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Send, Mail, Github, Linkedin, CheckCircle, Loader2, Sparkles } from 'lucide-react'
 import Confetti from './Confetti'
 import { hasSupabaseConfig, supabase } from '../lib/supabase'
@@ -15,6 +15,7 @@ const SOCIALS = [
 const INITIAL = { name: '', email: '', message: '' }
 
 export default function Contact() {
+  const reducedMotion = useReducedMotion()
   const [form, setForm]           = useState(INITIAL)
   const [loading, setLoading]     = useState(false)
   const [sent, setSent]           = useState(false)
@@ -73,7 +74,6 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <p className="text-indigo-400 font-semibold text-sm tracking-widest uppercase mb-3 flex items-center justify-center gap-2">
-            <Sparkles size={14} /> Let's Talk
           </p>
           <h2 className="section-title">Get In Touch</h2>
           <p className="section-subtitle">Have a project in mind? Let's build something intelligent together.</p>
@@ -83,7 +83,33 @@ export default function Contact() {
           <div id="contact-star-stage" className="contact-star-stage">
             <canvas className="contact-star-canvas" aria-hidden="true" />
             <div className="contact-star-copy">
-              <h3 className="text-white font-bold">Connect</h3>
+              <motion.h3
+                className="contact-connect-heading"
+                aria-label="Connect"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.8 }}
+              >
+                <span className="contact-connect-word" aria-hidden="true">
+                  {'Connect'.split('').map((letter, index) => (
+                    <motion.span
+                      key={index}
+                      variants={{
+                        hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 12 },
+                        visible: { opacity: 1, y: 0 },
+                      }}
+                      transition={{ duration: reducedMotion ? 0 : 0.4, delay: reducedMotion ? 0 : index * 0.055 }}
+                    >{letter}</motion.span>
+                  ))}
+                  <span className="contact-connect-dot">.</span>
+                </span>
+                <motion.span
+                  aria-hidden="true"
+                  className="contact-connect-line"
+                  variants={{ hidden: { scaleX: reducedMotion ? 1 : 0 }, visible: { scaleX: 1 } }}
+                  transition={{ duration: reducedMotion ? 0 : 0.5, delay: reducedMotion ? 0 : 0.3 }}
+                />
+              </motion.h3>
               <div className="contact-star-socials">
                 {SOCIALS.map(({ icon: Icon, href, label }) => (
                   <a

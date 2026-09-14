@@ -11,16 +11,12 @@ const SNIPPETS = {
     'skills.map(skill => (\n  <motion.div\n    key={skill.name}\n    animate={{ width: `${skill.level}%` }}\n  />\n));',
   ],
   projects: [
-    'const projects = [\n  "Multi-Agent AI Assistant",\n  "Smart Fitness Planner",\n  "IoT Smart Water Pump",\n  "AI Chat Application",\n];',
-    'const onMouseMove = event => {\n  const rect = card.getBoundingClientRect();\n  const x = event.clientX - rect.left;\n  const rotateY = (x / rect.width - 0.5) * 16;\n  setTilt({ rotateY });\n};',
+    'const project = {\n  name: "Redef & Focas Director Board",\n  github: "https://github.com/Sinthujans23/Radef-focas-Project",\n};',
+    'const exploreProject = () => {\n  window.open(project.github, "_blank", "noopener,noreferrer");\n};',
   ],
   experience: [
     'const timeline = [\n  "AI Student",\n  "AI Project Developer",\n];\nconst focus = ["LangChain", "RAG", "FastAPI"];',
     '<motion.article\n  initial={{ opacity: 0, y: 30 }}\n  whileInView={{ opacity: 1, y: 0 }}\n  viewport={{ once: true }}\n/>',
-  ],
-  certifications: [
-    'const certifications = [\n  "LangChain & LLM Applications",\n  "Docker & Containerization",\n];',
-    'certifications.map(certificate => (\n  <article key={certificate}>\n    <Award size={24} />\n    <h3>{certificate}</h3>\n  </article>\n));',
   ],
   blog: [
     'const slugs = STATIC_ARTICLES\n  .map(article => article.slug);\nconst [views, setViews] = useState({});',

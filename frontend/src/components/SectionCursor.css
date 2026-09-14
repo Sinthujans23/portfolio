@@ -153,20 +153,6 @@
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.section-cursor[data-mode='certifications'] { --cursor-color: #e8d28c; }
-.section-cursor[data-mode='certifications'] .section-cursor__shape {
-  width: 22px;
-  height: 22px;
-  border-radius: 5px;
-  transform: translate(-50%, -50%) rotate(30deg);
-}
-.section-cursor[data-mode='certifications'] .section-cursor__accent {
-  width: 22px;
-  height: 22px;
-  border-radius: 5px;
-  transform: translate(-50%, -50%) rotate(-30deg);
-}
-
 .section-cursor[data-mode='blog'] { --cursor-color: #9bbffa; }
 .section-cursor[data-mode='blog'] .section-cursor__shape {
   width: 7px;

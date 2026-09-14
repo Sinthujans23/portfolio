@@ -1,3 +1,4 @@
+import { scrollToSection } from '../lib/scrollToSection'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUp } from 'lucide-react'
@@ -21,7 +22,7 @@ export default function BackToTop() {
           transition={{ duration: 0.25 }}
           whileHover={{ scale: 1.1, y: -3 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => scrollToSection('home')}
           aria-label="Back to top"
           className="fixed bottom-8 right-6 z-50 w-11 h-11 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-shadow"
         >

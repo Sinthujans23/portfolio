@@ -35,6 +35,7 @@ export default function Blog() {
   const [views, setViews] = useBlogViews()
 
   const handleClick = async (slug) => {
+    window.history.replaceState(window.history.state, '', '/#blog')
     await trackView(slug)
     setViews(prev => ({ ...prev, [slug]: (prev[slug] || 0) + 1 }))
   }
@@ -53,13 +54,12 @@ export default function Blog() {
           className="text-center mb-16"
         >
           <p className="text-indigo-400 font-semibold text-sm tracking-widest uppercase mb-3 flex items-center justify-center gap-2">
-            <PenLine size={14} /> Writing
           </p>
           <h2 className="section-title">Blog & Articles</h2>
           <p className="section-subtitle">Thoughts on AI, ML, and building intelligent systems</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {STATIC_ARTICLES.map((article, i) => (
             <motion.div
               key={article.slug}
@@ -81,17 +81,17 @@ export default function Blog() {
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${TAG_COLORS[article.tag] || 'text-gray-300 bg-white/5 border-white/10'}`}>
                       {article.tag}
                     </span>
-                    <span className="text-xs text-gray-600 font-mono">{article.date}</span>
+                    <span className="text-xs text-gray-400 font-mono">{article.date}</span>
                   </div>
 
-                  <h3 className="text-sm font-bold text-white leading-snug mb-3 group-hover:gradient-text transition-all">
+                  <h3 className="text-lg font-bold text-white leading-snug mb-3 group-hover:gradient-text transition-all">
                     {article.title}
                   </h3>
 
-                  <p className="text-xs text-gray-500 leading-relaxed flex-1 mb-5">{article.excerpt}</p>
+                  <p className="text-sm text-gray-400 leading-relaxed flex-1 mb-5">{article.excerpt}</p>
 
                   <div className="flex items-center justify-between pt-3 border-t border-white/5">
-                    <div className="flex items-center gap-3 text-xs text-gray-600">
+                    <div className="flex items-center gap-3 text-xs text-gray-400">
                       <span className="flex items-center gap-1">
                         <Clock size={11} />
                         {article.readTime}
@@ -103,7 +103,7 @@ export default function Blog() {
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-gray-600 group-hover:text-indigo-400 transition-colors">
+                    <div className="flex items-center gap-1 text-xs text-gray-400 group-hover:text-indigo-400 transition-colors">
                       Read more →
                     </div>
                   </div>
@@ -121,7 +121,10 @@ export default function Blog() {
           className="text-center mt-10"
         >
           <button
-            onClick={() => navigate('/articles')}
+            onClick={() => {
+              window.history.replaceState(window.history.state, '', '/#blog')
+              navigate('/articles')
+            }}
             className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white glass border border-white/10 hover:border-indigo-500/40 px-6 py-3 rounded-xl transition-all hover:scale-105"
           >
             <Sparkles size={15} />

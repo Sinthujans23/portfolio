@@ -68,7 +68,7 @@ export default function Experience() {
           className="text-center mb-16"
         >
           <p className="text-indigo-400 font-semibold text-sm tracking-widest uppercase mb-3 flex items-center justify-center gap-2">
-            <Sparkles size={14} /> Journey
+           
           </p>
           <h2 className="section-title">Experience & Timeline</h2>
           <p className="section-subtitle">My path in AI development and learning</p>

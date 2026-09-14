@@ -19,7 +19,7 @@ export default function ProfileOrbit() {
     const sprites = createStarSprites()
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const pointer = { x: 0, y: 0, active: false }
-    const count = window.matchMedia('(max-width: 767px)').matches ? 3200 : 5500
+    const count = window.matchMedia('(max-width: 767px)').matches ? 1400 : 2600
     const stars = Array.from({ length: count }, () => {
       const depth = Math.random()
       const outer = Math.random() < 0.52
@@ -98,7 +98,7 @@ export default function ProfileOrbit() {
       centerX = orbit.left + orbit.width / 2 - bounds.left
       centerY = orbit.top + orbit.height / 2 - bounds.top
       if (name) nameAngle = Math.atan2(name.top + name.height / 2 - bounds.top - centerY, name.left + name.width / 2 - bounds.left - centerX)
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
       canvas.width = Math.round(width * dpr)
       canvas.height = Math.round(height * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)

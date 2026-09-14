@@ -106,10 +106,9 @@ export default function Hero() {
             </motion.div>
 
             {/* Stats row */}
-            <motion.div {...fadeUp(0.48)} className="grid grid-cols-3 gap-3 mb-8">
+            <motion.div {...fadeUp(0.48)} className="grid grid-cols-2 gap-3 mb-8">
               {[
                 { num: '10+', label: 'Projects Built'  },
-                { num: '5+',  label: 'Certifications'  },
                 { num: '2+',  label: 'Years Learning'  },
               ].map(({ num, label }) => (
                 <div key={label} className="glass border border-white/[0.07] rounded-2xl p-3 text-center">

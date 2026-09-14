@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import './SectionCursor.css'
 
-const SECTION_IDS = ['home', 'about', 'skills', 'projects', 'experience', 'certifications', 'blog', 'contact']
+const SECTION_IDS = ['home', 'about', 'skills', 'projects', 'experience', 'blog', 'contact']
 const NATIVE_CURSOR_TARGETS = 'input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], iframe, [data-native-cursor]'
 const INTERACTIVE_TARGETS = 'a, button, summary, label, [role="button"], [data-cursor="pointer"]'
 

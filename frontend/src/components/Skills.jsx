@@ -22,7 +22,7 @@ const CATEGORIES = [
     border: 'hover:border-indigo-500/30',
     skills: [
       { name: 'React',        level: 85 },
-      { name: 'Tailwind CSS', level: 90 },
+      
       { name: 'HTML',         level: 95 },
       { name: 'CSS',          level: 88 },
     ],
@@ -58,7 +58,7 @@ const CATEGORIES = [
     gradient: 'from-pink-600 to-purple-500',
     border: 'hover:border-pink-500/30',
     skills: [
-      { name: 'Git',    level: 88 },
+      
       { name: 'GitHub', level: 90 },
       { name: 'VS Code',level: 95 },
       { name: 'Docker', level: 65 },
@@ -101,9 +101,7 @@ export default function Skills() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-indigo-400 font-semibold text-sm tracking-widest uppercase mb-3 flex items-center justify-center gap-2">
-            <Sparkles size={14} /> My Toolkit
-          </p>
+         
           <h2 className="section-title">Skills & Technologies</h2>
           <p className="section-subtitle">Technologies I work with to build intelligent solutions</p>
         </motion.div>

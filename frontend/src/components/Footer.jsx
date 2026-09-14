@@ -1,3 +1,4 @@
+import { scrollToSection } from '../lib/scrollToSection'
 import { useState } from 'react'
 import { Heart, Zap, Terminal, Send, CheckCircle } from 'lucide-react'
 import { hasSupabaseConfig, supabase } from '../lib/supabase'
@@ -70,7 +71,9 @@ function NewsletterForm() {
 }
 
 export default function Footer() {
-  const go = href => document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+  const go = href => {
+    scrollToSection(href)
+  }
 
   return (
     <footer className="relative border-t border-white/[0.05] pt-12 pb-8 z-10">

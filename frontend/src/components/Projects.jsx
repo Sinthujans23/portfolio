@@ -1,163 +1,145 @@
 import CodeBackground from './CodeBackground'
-import { useState, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Github, Bot, Dumbbell, Droplets, MessageSquare, Sparkles } from 'lucide-react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { Github, Cpu } from 'lucide-react'
 
 const PROJECTS = [
   {
-    icon: Bot,
-    title: 'Multi-Agent AI Assistant',
-    description:
-      'An AI system consisting of specialized orchestration, planning, and execution agents working in tandem to solve complex, multi-step tasks with advanced reasoning and memory.',
-    tech: ['Python', 'LangChain', 'OpenAI', 'FastAPI', 'React'],
-    gradient: 'from-indigo-600 via-purple-600 to-violet-700',
-    glow: 'rgba(99,102,241,0.3)',
-    github: '#',
+    icon: Cpu,
+    title: 'Shuttle Thrower – AI-Enabled Smart Badminton Training System',
+    description: 'An automated badminton shuttle-feeding system that combines hardware, AI, and wireless communication for real-time player-position-based shuttle control.',
+    highlights: [
+      'Programmable shuttle direction, motion control, and training levels.',
+      'AI-based player position detection using Python, OpenCV, MediaPipe, and real-time camera input.',
+      'Arduino-controlled servo feeding, stepper-motor movement, and a keypad/LCD interface.',
+      'IoT training-session tracking with ESP8266, Google Sheets, and a Thunkable mobile app.',
+    ],
+    tech: ['Arduino Mega', 'Python', 'ESP8266', 'IoT', 'OpenCV', 'MediaPipe', 'Google Sheets', 'Thunkable'],
+    gradient: 'from-orange-600 via-amber-600 to-yellow-600',
+    glow: 'rgba(245,158,11,0.3)',
+    badge: 'AI & IoT',
+  },
+  {
+    icon: Github,
+    title: 'Redef & Focas Director Board',
+    description: 'An organization news site where a single admin publishes text, photo, and video updates and manages the organization’s public details. Visitors can view posts, like them, and leave comments without an account.',
+    highlights: [
+      'Login-protected admin dashboard with exclusive access to create and delete posts.',
+      'Editable organization profile with name, tagline, description, logo, contact information, and social links displayed on the public homepage.',
+      'Public likes and comments attributed through a lightweight per-browser identity, with no account required.',
+      'A notification bell counts new posts since the viewer’s last visit using background polling.',
+      'Admin authentication using a JWT stored in an httpOnly cookie and passwords hashed with bcrypt.',
+    ],
+    tech: ['Next.js App Router', 'TypeScript', 'MongoDB', 'Mongoose', 'Tailwind CSS', 'JWT', 'bcrypt'],
+    gradient: 'from-cyan-600 via-blue-600 to-indigo-600',
+    glow: 'rgba(6,182,212,0.3)',
+    github: 'https://github.com/Sinthujans23/Radef-focas-Project',
     badge: 'Featured',
   },
   {
-    icon: Dumbbell,
-    title: 'Smart Fitness Planner',
-    description:
-      'AI-powered fitness recommendation system that creates personalized workout and nutrition plans based on individual goals, fitness level, preferences, and progress tracking.',
-    tech: ['Python', 'Scikit-learn', 'React', 'Node.js', 'MongoDB'],
-    gradient: 'from-purple-600 via-fuchsia-600 to-pink-600',
-    glow: 'rgba(139,92,246,0.3)',
-    github: '#',
-    badge: 'ML',
-  },
-  {
-    icon: Droplets,
-    title: 'IoT Smart Water Pump',
-    description:
-      'IoT-enabled water management solution with real-time sensor monitoring, automated control, intelligent scheduling, and a live dashboard to optimize water consumption.',
-    tech: ['Arduino', 'Python', 'MQTT', 'React', 'MongoDB'],
-    gradient: 'from-cyan-600 via-blue-600 to-indigo-600',
-    glow: 'rgba(6,182,212,0.3)',
-    github: '#',
-    badge: 'IoT',
-  },
-  {
-    icon: MessageSquare,
-    title: 'AI Chat Application',
-    description:
-      'Modern conversational AI platform with context-aware multi-turn conversations, streaming responses, and seamless integration with various large language models.',
-    tech: ['React', 'Node.js', 'OpenAI API', 'Socket.io', 'Tailwind'],
+    icon: Github,
+    title: 'AgenticQA Engineer with Self-Healing Test Automation',
+    description: 'An AI-powered QA platform that converts natural-language test requests into executable Playwright test plans, generates automated test scripts, validates application flows, and supports self-healing test execution through a VS Code extension and Node.js orchestrator.',
+    responsibilities: 'App Knowledge Packs, Retrieval-First Planning, Auditor, Test Script Generator Agent, and Test Planner Agent.',
+    highlights: [
+      'Implemented the App Knowledge Pack schema and automated loader for credentials, routes, golden flows, assertion aliases, stable elements, and planner guidance with strict integrity rules.',
+      'Built a field-weighted BM25F flow retrieval engine with key-coverage tie-breaking, abstention handling, and interaction promotion for accurate multi-step form-flow matching.',
+      'Developed deterministic-first and RAG-based planning logic to generate grounded test plans from verified golden flows and page-scoped context.',
+      'Implemented plan grounding with wait stabilization, element snapping, role-aware matching, input preservation, and assertion restoration to prevent false-positive passing tests.',
+      'Built an automated knowledge-pack generator using static extraction, crawling, route and credential detection, model synthesis, and flow validation before inclusion.',
+      'Developed the Playwright test script generator with role-informed locator emission, step identity markers, and accessibility-first locator best practices.',
+      'Created a substance auditor to classify generated tests as vacuous, under-tested, off-target, or substantive, helping compare raw pass rates with meaningful test coverage.',
+    ],
+    tech: ['TypeScript', 'Node.js', 'Playwright', 'VS Code Extension API', 'OpenAI/LLM APIs', 'RAG', 'BM25F Retrieval', 'Zod', 'PostgreSQL/pgvector', 'React', 'Vite'],
     gradient: 'from-emerald-600 via-teal-600 to-cyan-600',
     glow: 'rgba(16,185,129,0.3)',
-    github: '#',
-    badge: 'LLM',
+    github: 'https://github.com/LahiruPramuditha2003/AgenticQA-private-archive',
+    badge: 'Featured',
   },
 ]
 
 function ProjectCard({ project, index }) {
-  const { icon: Icon, title, description, tech, gradient, glow, github, badge } = project
-  const cardRef = useRef(null)
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+  const [isActive, setIsActive] = useState(false)
+  const titleRef = useRef(null)
+  const reducedMotion = useReducedMotion()
+  const isInView = useInView(titleRef, { once: true, amount: 0.5, margin: '0px 0px -35% 0px' })
+  const { title, description, responsibilities, highlights, tech, github } = project
 
-  const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
-
-  const onMouseMove = e => {
-    if (isTouch) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    const rotateY = ((e.clientX - cx) / (rect.width / 2)) * 8
-    const rotateX = -((e.clientY - cy) / (rect.height / 2)) * 8
-    setTilt({ x: rotateX, y: rotateY })
-  }
-
-  const onMouseLeave = () => setTilt({ x: 0, y: 0 })
+  useEffect(() => {
+    if (isInView) setIsActive(true)
+  }, [isInView])
 
   return (
-    <motion.article
-      ref={cardRef}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.55, delay: index * 0.12 }}
-      style={{
-        transform: `perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-        transition: tilt.x === 0 ? 'transform 0.5s ease' : 'transform 0.1s ease',
-      }}
-      className="group glass border border-white/[0.07] hover:border-white/15 rounded-3xl overflow-hidden flex flex-col"
-    >
-      {/* Project banner */}
-      <div
-        className={`relative h-52 bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}
-        style={{ boxShadow: `inset 0 -40px 60px rgba(0,0,0,0.4)` }}
+    <article className="border-b border-white/10 last:border-b-0">
+      <button
+        ref={titleRef}
+        type="button"
+        onClick={() => setIsActive(true)}
+        className={`w-full flex items-center gap-4 py-7 sm:py-9 text-left transition-colors ${isActive ? 'text-white' : 'text-gray-500'}`}
+        aria-expanded={isActive}
+        aria-controls={`project-details-${index}`}
       >
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.12]"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.4) 1px, transparent 0)',
-            backgroundSize: '28px 28px',
-          }}
-        />
-        {/* Large faded icon bg */}
-        <Icon
-          size={120}
-          className="absolute -right-4 -bottom-4 text-white/5 group-hover:text-white/10 transition-all duration-500"
-        />
-
-        {/* Center icon */}
-        <motion.div
-          whileHover={{ scale: 1.12, rotate: 6 }}
-          className="relative w-20 h-20 bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl flex items-center justify-center shadow-2xl"
-          style={{ boxShadow: `0 8px 32px ${glow}` }}
-        >
-          <Icon size={38} className="text-white" />
-        </motion.div>
-
-        {/* Badge */}
-        <span className="absolute top-4 right-4 text-xs font-bold text-white bg-white/15 backdrop-blur-sm border border-white/20 px-3 py-1 rounded-full">
-          {badge}
-        </span>
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-6">
-        <h3 className="text-lg font-bold text-white mb-2 group-hover:gradient-text transition-all">
+        <span className="text-xs font-mono text-indigo-400">{String(index + 1).padStart(2, '0')}</span>
+        <h3 className="flex-1 text-xl sm:text-2xl lg:text-3xl font-bold leading-tight">
           {title}
         </h3>
-        <p className="text-gray-400 text-sm leading-relaxed mb-4 flex-1">{description}</p>
+        <span className={`text-xl transition-transform duration-500 ${isActive ? 'rotate-45 text-indigo-300' : ''}`} aria-hidden="true">+</span>
+      </button>
+      <motion.div
+        id={`project-details-${index}`}
+        aria-hidden={!isActive}
+        inert={!isActive ? '' : undefined}
+        initial={false}
+        animate={{
+          height: isActive ? 'auto' : 0,
+          opacity: isActive ? 1 : 0,
+        }}
+        transition={{ duration: reducedMotion ? 0 : 0.35, ease: 'easeOut' }}
+        className="max-w-4xl mx-auto overflow-hidden"
+      >
+        <div className="pb-16 sm:pb-24">
+          <p className="text-gray-400 text-base leading-relaxed mb-8">{description}</p>
+          {responsibilities && (
+            <div className="mb-4">
+              <h4 className="text-sm font-semibold text-white mb-2">My Contribution & Main Responsibilities</h4>
+              <p className="text-gray-400 text-base leading-relaxed">{responsibilities}</p>
+            </div>
+          )}
+          {highlights && (
+            <ul className="list-disc pl-5 space-y-3 text-gray-400 text-base leading-relaxed mb-5">
+              {highlights.map(highlight => <li key={highlight}>{highlight}</li>)}
+            </ul>
+          )}
 
-        {/* Tech tags */}
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {tech.map(t => (
-            <span key={t} className="tech-tag">{t}</span>
-          ))}
-        </div>
+          {/* Tech tags */}
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {tech.map(t => (
+              <span key={t} className="tech-tag">{t}</span>
+            ))}
+          </div>
 
-        {/* Links */}
-        <div className="flex gap-2.5">
-          <a
-            href={github}
-            className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white glass border border-white/10 hover:border-white/20 px-4 py-2 rounded-xl transition-all hover:scale-105"
-          >
-            <Github size={14} /> Code
-          </a>
+          {/* Links */}
+          {github && <div className="flex gap-2.5">
+            <a
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white glass border border-white/10 hover:border-white/20 px-4 py-2 rounded-xl transition-all hover:scale-105"
+            >
+              <Github size={14} /> Code
+            </a>
+          </div>}
         </div>
-      </div>
-    </motion.article>
+      </motion.div>
+    </article>
   )
 }
 
-const FILTERS = ['All', 'Featured', 'ML', 'IoT', 'LLM']
-
 export default function Projects() {
-  const [active, setActive] = useState('All')
-
-  const filtered = active === 'All' ? PROJECTS : PROJECTS.filter(p => p.badge === active)
-
   return (
-    <section id="projects" className="py-28 relative">
+    <section id="projects" className="py-28 relative isolate overflow-x-clip">
       <CodeBackground section="projects" />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-64 bg-purple-900/8 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-64 bg-purple-900/8 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="container relative z-10">
         <motion.div
@@ -168,58 +150,21 @@ export default function Projects() {
           className="text-center mb-12"
         >
           <p className="text-indigo-400 font-semibold text-sm tracking-widest uppercase mb-3 flex items-center justify-center gap-2">
-            <Sparkles size={14} /> My Work
+            
           </p>
           <h2 className="section-title">Featured Projects</h2>
           <p className="section-subtitle">Things I've built — from AI agents to IoT solutions</p>
         </motion.div>
 
-        {/* Filter tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="flex flex-wrap gap-2 justify-center mb-10"
-        >
-          {FILTERS.map(f => (
-            <button
-              key={f}
-              onClick={() => setActive(f)}
-              className={`relative px-5 py-2 rounded-full text-sm font-semibold transition-all ${
-                active === f
-                  ? 'text-white'
-                  : 'text-gray-400 hover:text-white glass border border-white/10 hover:border-white/20'
-              }`}
-            >
-              {active === f && (
-                <motion.span
-                  layoutId="filter-pill"
-                  className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full"
-                  transition={{ type: 'spring', bounce: 0.2, duration: 0.35 }}
-                />
-              )}
-              <span className="relative z-10">{f}</span>
-            </button>
+        <div className="flex flex-col max-w-5xl mx-auto border-t border-white/10">
+          {PROJECTS.map((project, index) => (
+            <ProjectCard
+              key={project.title}
+              project={project}
+              index={index}
+            />
           ))}
-        </motion.div>
-
-        <motion.div layout className="grid md:grid-cols-2 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((project, i) => (
-              <motion.div
-                key={project.title}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3, delay: i * 0.07 }}
-              >
-                <ProjectCard project={project} index={i} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        </div>
 
         {/* More on GitHub */}
         <motion.div
@@ -230,7 +175,7 @@ export default function Projects() {
           className="text-center mt-10"
         >
           <a
-            href="https://github.com"
+            href="https://github.com/Sinthujans23"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 text-gray-400 hover:text-white glass border border-white/10 hover:border-indigo-500/40 px-6 py-3 rounded-xl text-sm font-medium transition-all hover:scale-105"

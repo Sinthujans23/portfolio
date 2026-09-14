@@ -1,7 +1,7 @@
+import { scrollToSection } from '../lib/scrollToSection'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Zap, Sun, Moon } from 'lucide-react'
-import { useTheme } from '../context/ThemeContext'
+import { Menu, X, Zap } from 'lucide-react'
 
 const LINKS = [
   { label: 'Home',         href: '#home' },
@@ -9,7 +9,7 @@ const LINKS = [
   { label: 'Skills',       href: '#skills' },
   { label: 'Projects',     href: '#projects' },
   { label: 'Experience',   href: '#experience' },
-  { label: 'Certs',        href: '#certifications'  },
+  
   { label: 'Blog',         href: '#blog'            },
   { label: 'Contact',      href: '#contact'         },
 ]
@@ -18,7 +18,6 @@ export default function Navbar() {
   const [scrolled, setScrolled]   = useState(false)
   const [open, setOpen]           = useState(false)
   const [active, setActive]       = useState('home')
-  const { theme, toggle }         = useTheme()
 
   useEffect(() => {
     const onScroll = () => {
@@ -34,7 +33,7 @@ export default function Navbar() {
   }, [])
 
   const go = href => {
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    scrollToSection(href)
     setOpen(false)
   }
 
@@ -89,27 +88,9 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Theme toggle + CTA */}
+        {/* Contact CTA */}
         <div className="hidden md:flex items-center gap-2">
-          <motion.button
-            onClick={toggle}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Toggle theme"
-            className="w-9 h-9 glass border border-white/10 rounded-xl flex items-center justify-center text-gray-400 hover:text-indigo-400 hover:border-indigo-500/40 transition-all"
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span
-                key={theme}
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0,   opacity: 1 }}
-                exit={{   rotate:  90,  opacity: 0 }}
-                transition={{ duration: 0.15 }}
-              >
-                {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-              </motion.span>
-            </AnimatePresence>
-          </motion.button>
+
 
           <a
             href="#contact"
@@ -161,13 +142,7 @@ export default function Navbar() {
                   {label}
                 </button>
               ))}
-              <button
-                onClick={toggle}
-                className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/[0.06] transition-all"
-              >
-                {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
-                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-              </button>
+
               <button
                 onClick={() => go('#contact')}
                 className="mt-2 w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-sm font-semibold text-white"
