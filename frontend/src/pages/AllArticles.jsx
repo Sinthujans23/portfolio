@@ -99,33 +99,37 @@ export default function AllArticles() {
   }
 
   const handleDelete = async () => {
-    if (!deletingSlug) return
+    if (!deletingSlug || deleting) return
+    const slug = deletingSlug
     setDeleting(true)
     setDeleteError('')
-
-    const apiBase = import.meta.env.VITE_API_URL || ''
-    const response = await fetch(`${apiBase}/api/articles/${encodeURIComponent(deletingSlug)}`, {
-      method: 'DELETE',
-      headers: {
-        'x-admin-password': import.meta.env.VITE_ADMIN_PASSWORD || 'admin123',
-      },
-    })
-    const result = await response.json().catch(() => ({}))
-
-    if (!response.ok) {
-      setDeleteError(result.error || 'Failed to delete article from the database.')
+    try {
+      const apiBase = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+      const response = await fetch(`${apiBase}/api/articles/${encodeURIComponent(slug)}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-password': import.meta.env.VITE_ADMIN_PASSWORD || 'admin123' },
+        signal: AbortSignal.timeout(15000),
+      })
+      const result = await response.json().catch(() => ({}))
+      if (!response.ok || result.ok !== true || result.slug !== slug) {
+        throw new Error(result.error || 'Deletion could not be confirmed. Check that the backend is running and try again.')
+      }
+      setDbArticles(previous => previous.filter(article => article.slug !== slug))
+      setViews(previous => {
+        const next = { ...previous }
+        delete next[slug]
+        return next
+      })
+      setDeletingSlug(null)
+    } catch (error) {
+      setDeleteError(error.name === 'TimeoutError'
+        ? 'The request timed out. Refresh the list to check whether the article was deleted before retrying.'
+        : error instanceof TypeError
+          ? 'Unable to reach the server. Check your connection and make sure the backend is running.'
+          : error.message)
+    } finally {
       setDeleting(false)
-      return
     }
-
-    setDbArticles(prev => prev.filter(a => a.slug !== deletingSlug))
-    setViews(prev => {
-      const next = { ...prev }
-      delete next[deletingSlug]
-      return next
-    })
-    setDeletingSlug(null)
-    setDeleting(false)
   }
 
   return (

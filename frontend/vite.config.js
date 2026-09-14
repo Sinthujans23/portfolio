@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
-  cacheDir: 'C:/Users/ASUS/.vite_cache/portfolio',
+  cacheDir: 'node_modules/.vite',
   resolve: {
     alias: {
       'lucide-react': path.resolve(__dirname, 'node_modules/lucide-react/dist/umd/lucide-react.js'),
@@ -16,5 +16,11 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
   },
 })
